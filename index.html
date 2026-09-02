@@ -188,7 +188,7 @@ const CONFIG = {
   ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
   SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
   ACTIVITY: "NL1",                   // which activity this page records
-  VERSION: "nl1-2026-09-02e",
+  VERSION: "nl1-2026-09-02f",
   SECTIONS: {
     "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
     "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
@@ -837,7 +837,7 @@ function renderSignin(){
       <div class="field">
         <label for="code">Class code (Professor Calafiore says it in class)</label>
         <input id="code" autocomplete="off" autocapitalize="characters" placeholder="RIVER-73" maxlength="20" value="${state.typedCode ? state.typedCode : ""}">
-        <div class="hint">Two parts: a word and a number. Capital letters do not matter.</div>
+        <div class="hint">Two parts: a word and a number. Capital letters do not matter. Started in class but did not finish? The same code works from home until 8:00 AM the next morning.</div>
       </div>
       <div class="field">
         <label for="netid">Your NetID</label>
@@ -901,7 +901,7 @@ async function submitSignin(){
   } else if(!r.ok){
     const why = {
       bad_code: "That class code is not right. Check the board and type it again.",
-      window_closed: "Class is not open right now, so the activity cannot be recorded. Ask Professor Calafiore.",
+      window_closed: "This activity is closed (it stays open until 8:00 AM the morning after class). Ask Professor Calafiore.",
       no_endpoint: "Recording is switched off on this copy of the page.",
       timeout: "The collector did not answer. Check the Wi-Fi and press the button again.",
       network: "Could not reach the collector. Check the Wi-Fi and press the button again."
