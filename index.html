@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Week at Northline | Choosing the Right Communication Medium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FCF8F1; --cream:#F6EEE0; --gray:#EFE8DD; --gray-edge:#CABFB0;
+  --ink:#312B26; --ink-soft:#6E635A;
+  --accent:#B0635F; --accent-deep:#8C4A47;
+  --blue:#E6EFF3; --blue-edge:#5A8499;
+  --sage:#E9F1E5; --sage-edge:#5E7E54;
+  --clay:#F6E9DA; --clay-edge:#A6743F;
+  --blush:#FAECE9;
+  --radius:18px;
+  --shadow:0 18px 44px -30px rgba(49,43,38,.55);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; padding:46px 20px 80px;
+  background:
+    radial-gradient(1100px 520px at 78% -8%, #F4E7DA 0%, rgba(244,231,218,0) 60%),
+    radial-gradient(900px 480px at 6% 4%, #EAF0F2 0%, rgba(234,240,242,0) 55%),
+    var(--cream);
+  color:var(--ink);
+  font-family:"Hanken Grotesk", system-ui, sans-serif;
+  font-size:18px; line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:740px; margin:0 auto}
+h1,h2,h3{font-family:"Fraunces", Georgia, serif; line-height:1.18; font-weight:600; letter-spacing:.1px}
+h1{font-size:40px; margin:.1em 0 .25em}
+h2{font-size:27px; margin:.2em 0 .4em}
+h3{font-size:20px; margin:0 0 .35em}
+p{margin:.55em 0}
+b,strong{font-weight:700}
+.kicker{font-size:12.5px; letter-spacing:2px; text-transform:uppercase; font-weight:700; color:var(--accent-deep)}
+
+/* identity strip */
+.who-strip{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; font-size:13.5px; color:var(--ink-soft); margin-bottom:14px; letter-spacing:.3px}
+.who-strip b{color:var(--ink)}
+
+/* progress + phase */
+.progress{display:flex; align-items:center; gap:14px; margin-bottom:26px; flex-wrap:wrap}
+.dots{display:flex; gap:8px}
+.dot{width:9px; height:9px; border-radius:50%; background:var(--gray-edge); opacity:.5; transition:.3s}
+.dot.on{background:var(--accent); opacity:1; transform:scale(1.25)}
+.dot.done{background:var(--accent); opacity:.7}
+.step-label{font-size:12.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-soft); font-weight:700}
+.phase{font-size:12.5px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; color:#fff; background:var(--accent); padding:4px 11px; border-radius:999px}
+.phase.learn{background:var(--blue-edge)} .phase.practice{background:var(--accent)} .phase.check{background:var(--clay-edge)} .phase.toolkit{background:var(--sage-edge)}
+
+.card{background:var(--paper); border-radius:var(--radius); padding:38px 36px; box-shadow:var(--shadow); border:1px solid #EBE2D4}
+.situation-tag{display:inline-block; background:var(--gray); color:var(--ink-soft); font-size:13px; letter-spacing:.4px; font-weight:700; padding:6px 14px; border-radius:999px; margin-bottom:18px; text-transform:uppercase}
+
+.msg-bubble{background:var(--gray); border-radius:14px; padding:14px 18px; margin:6px 0 18px; border-left:4px solid var(--gray-edge)}
+.msg-bubble .who{font-size:12.5px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft); font-weight:700; display:block; margin-bottom:5px}
+.msg-bubble .text{font-size:18px; font-style:italic}
+
+.reply-bubble{background:#fff; border:1px solid #E4DACB; border-radius:14px; border-top-left-radius:4px; padding:14px 18px; margin:2px 0 14px; box-shadow:0 8px 18px -16px rgba(49,43,38,.6)}
+.reply-bubble .who{font-size:12.5px; text-transform:uppercase; letter-spacing:.8px; color:var(--ink-soft); font-weight:700; display:block; margin-bottom:5px}
+.reply-bubble .text{font-size:17.5px; font-style:italic; color:var(--ink)}
+
+.q-prompt{font-family:"Fraunces",serif; font-weight:600; font-size:20px; margin:18px 0 0; color:var(--ink)}
+
+.options{display:flex; flex-direction:column; gap:14px; margin-top:22px}
+.opt{position:relative; display:flex; gap:15px; align-items:flex-start; text-align:left; border:1.5px solid #E4DACB; border-radius:14px; padding:18px 20px; font-family:inherit; font-size:17px; line-height:1.55; color:var(--ink); cursor:pointer; transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease; width:100%}
+.opt:hover,.opt:focus-visible{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 12px 26px -18px rgba(49,43,38,.6)}
+.opt:focus-visible{outline:3px solid var(--blue-edge); outline-offset:3px}
+.opt.a{background:#FAECE9} .opt.b{background:#E6EFF3} .opt.c{background:#E9F1E5} .opt.d{background:#F6E9DA}
+.opt[disabled]{cursor:default; opacity:.55; transform:none; box-shadow:none}
+.opt[disabled]:hover{border-color:#E4DACB; transform:none; box-shadow:none}
+.opt.chosen{opacity:1; border-color:var(--accent); border-width:2px}
+.opt-badge{flex-shrink:0; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:"Fraunces",serif; font-weight:600; font-size:19px; color:#fff}
+.opt-badge.a{background:#A85D5D} .opt-badge.b{background:#5A8499} .opt-badge.c{background:#5E7E54} .opt-badge.d{background:#A6743F}
+.opt-text{flex:1; padding-top:3px}
+.opt-viewed{display:inline-block; margin-top:9px; font-size:12px; letter-spacing:.6px; text-transform:uppercase; font-weight:700; color:var(--ink-soft)}
+
+/* reaction blocks */
+.block{border-radius:16px; padding:22px 24px; margin:0 0 16px; border-left:6px solid}
+.block h3{margin:0 0 8px} .block p{margin:0}
+.b-happened{background:var(--cream); border:1.5px solid #E4DACB; border-left-color:var(--gray-edge); border-left-width:6px}
+.b-why{background:var(--blue); border-left-color:var(--blue-edge)}
+.b-indicators{background:var(--paper); border:1.5px solid #EBE2D4; border-left-color:var(--gray-edge); border-left-width:6px}
+.b-concept{background:var(--sage); border-left-color:var(--sage-edge)}
+.b-warn{background:var(--blush); border-left-color:var(--accent)}
+.b-clay{background:var(--clay); border-left-color:var(--clay-edge)}
+
+.ind-grid{display:flex; flex-direction:column; gap:10px; margin-top:8px}
+.ind{display:flex; flex-direction:column; gap:6px; padding:14px 16px; border-radius:12px; background:var(--cream); border:1px solid #E4DACB}
+.ind-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+.ind-name{font-weight:700; font-size:16px}
+.ind-status{display:inline-flex; align-items:center; gap:6px; font-size:13.5px; font-weight:700; padding:4px 12px; border-radius:999px; letter-spacing:.3px}
+.ind-status.strong{background:var(--sage); color:#3D5A38}
+.ind-status.partial{background:var(--clay); color:#7A5234}
+.ind-status.weak{background:var(--blush); color:#7A3F3F}
+.ind-reason{font-size:15.5px; color:var(--ink-soft); line-height:1.55; margin:0}
+
+.btn-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
+.btn{display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; border:none; font-family:inherit; font-weight:700; font-size:17px; letter-spacing:.3px; padding:15px 28px; border-radius:999px; cursor:pointer; transition:transform .16s ease, background .16s ease}
+.btn:hover{background:var(--accent-deep); transform:translateY(-2px)}
+.btn:focus-visible{outline:3px solid var(--blue-edge); outline-offset:3px}
+.btn.ghost{background:transparent; color:var(--accent-deep); border:1.5px solid var(--accent)}
+.btn.ghost:hover{background:var(--blush)}
+.btn[disabled]{opacity:.5; cursor:default; transform:none}
+.center{text-align:center} .mini{font-size:15px; color:var(--ink-soft)}
+
+/* learn-phase helpers */
+.channel-list{background:var(--cream); border-radius:14px; padding:18px 22px; margin:6px 0 18px; border:1px solid #E4DACB}
+.channel-list .row{padding:8px 0; font-size:16.5px; border-bottom:1px dashed #E4DACB; display:flex; gap:12px; align-items:baseline}
+.channel-list .row:last-child{border-bottom:none}
+.channel-list .row b{color:var(--accent-deep)}
+.rank{flex-shrink:0; width:26px; height:26px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; font-family:"Fraunces",serif; font-size:15px; color:#fff; background:var(--ink-soft)}
+.pair{display:flex; gap:14px; margin:6px 0 18px; flex-wrap:wrap}
+.pair > div{flex:1; min-width:240px; border-radius:14px; padding:18px 20px}
+.pair .rich{background:var(--blush); border:1px solid #EAD3CF}
+.pair .lean{background:var(--blue); border:1px solid #D2E0E7}
+.pair h3{margin-top:0}
+
+/* your read */
+.profile{background:var(--paper); border:1px solid #EBE2D4; border-left:6px solid var(--accent); border-radius:16px; padding:24px 26px; margin-bottom:18px}
+.choice-row{display:flex; gap:13px; align-items:flex-start; background:var(--cream); border:1px solid #E4DACB; border-radius:13px; padding:14px 16px; margin-bottom:10px}
+.choice-row .num{flex-shrink:0; width:30px; height:30px; border-radius:9px; background:var(--accent); color:#fff; font-family:"Fraunces",serif; font-weight:600; display:flex; align-items:center; justify-content:center}
+.choice-row .num.clay{background:var(--clay-edge)}
+.choice-row .sit{font-size:12.5px; text-transform:uppercase; letter-spacing:.6px; color:var(--ink-soft); font-weight:700; margin-bottom:3px}
+.choice-row .pick{font-size:16px; color:var(--ink); line-height:1.5}
+.choice-row .pick b{color:var(--accent-deep)}
+
+.tool{background:var(--paper); border:1px solid #EBE2D4; border-left:6px solid var(--sage-edge); border-radius:16px; padding:20px 22px; margin-bottom:14px}
+.tool h3{margin:0 0 6px}
+.tool .example{font-size:15.5px; color:var(--ink-soft); margin-top:6px}
+.callout{background:var(--clay); border-left:6px solid var(--clay-edge); border-radius:16px; padding:20px 24px; margin:22px 0}
+
+/* sign in */
+.field{margin:18px 0 6px}
+.field label{display:block; font-weight:700; font-size:15px; letter-spacing:.3px; margin-bottom:8px}
+.field input{width:100%; font-family:inherit; font-size:22px; letter-spacing:2px; padding:14px 16px; border:1.5px solid #CABFB0; border-radius:12px; background:#fff; color:var(--ink)}
+.field input:focus{outline:3px solid var(--blue-edge); outline-offset:2px; border-color:var(--blue-edge)}
+.field .hint{font-size:14.5px; color:var(--ink-soft); margin-top:6px}
+.seg{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
+.seg button{flex:1; min-width:180px; font-family:inherit; font-size:16.5px; font-weight:700; padding:16px 18px; border-radius:14px; border:1.5px solid #E4DACB; background:#fff; color:var(--ink); cursor:pointer; text-align:left; line-height:1.4}
+.seg button small{display:block; font-weight:500; color:var(--ink-soft); font-size:14px}
+.seg button.on{border-color:var(--accent); background:var(--blush); box-shadow:0 0 0 2px var(--accent) inset}
+.err{color:#8C2F2B; font-weight:700; font-size:15px; margin-top:8px}
+.privacy{font-size:15px; color:var(--ink-soft); background:var(--paper); border:1px dashed #CABFB0; border-radius:12px; padding:14px 16px; margin-top:20px}
+.privacy b{color:var(--ink)}
+
+/* score */
+.score-hero{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin:6px 0 10px}
+.score-num{font-family:"Fraunces",serif; font-size:64px; font-weight:600; line-height:1; color:var(--accent-deep)}
+.score-of{font-size:20px; color:var(--ink-soft)}
+.status-line{display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:16px; padding:14px 16px; border-radius:12px; margin-top:10px}
+.status-line.ok{background:var(--sage); border:1px solid #CFE0C8}
+.status-line.wait{background:var(--clay); border:1px solid #EAD6BC}
+.status-line.bad{background:var(--blush); border:1px solid #EAD3CF}
+.record-id{font-family:"Fraunces",serif; font-size:26px; letter-spacing:3px; font-weight:600; color:var(--ink)}
+
+.screen{animation:rise .5s ease both}
+@keyframes rise{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+.stagger>*{animation:rise .5s ease both}
+.stagger>*:nth-child(2){animation-delay:.06s} .stagger>*:nth-child(3){animation-delay:.12s}
+.stagger>*:nth-child(4){animation-delay:.18s} .stagger>*:nth-child(5){animation-delay:.24s}
+@media (prefers-reduced-motion: reduce){.screen,.stagger>*{animation:none}.opt{transition:none}}
+@media (max-width:520px){body{padding:30px 14px 60px; font-size:17px} .card{padding:26px 22px} h1{font-size:32px} .score-num{font-size:52px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app"></div>
+</div>
+
+<script>
+/* =========================================================================
+   YOUR WEEK AT NORTHLINE · Media Richness simulation · graded edition
+   Learn (4 ideas) → Practice (5 moments, explore freely) → The Check (5 new
+   moments, one answer each, scored) → Result (recorded for the instructor).
+   Privacy: the page never sends a name, email, or NetID. The NetID is
+   scrambled in this browser (SHA-256 with a public salt) before anything
+   leaves the laptop; the collector scrambles it again with a private key.
+   ========================================================================= */
+
+const CONFIG = {
+  ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
+  SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
+  ACTIVITY: "NL1",                   // which activity this page records
+  VERSION: "nl1-2026-09-02",
+  SECTIONS: {
+    "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
+    "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
+  },
+  POINTS: { strong: 2, partial: 1, weak: 0 }
+};
+
+(function(){ try { const q = new URLSearchParams(location.search); if(q.get("test") === "1") CONFIG.ACTIVITY = CONFIG.ACTIVITY + "-TEST"; } catch(e){} })();
+const TOTAL_LEARN = 4;
+const TOTAL_PRACTICE = 5;
+const TOTAL_CHECK = 5;
+const STORE_KEY = "northline_" + CONFIG.ACTIVITY;
+
+const state = {
+  screen: "intro",      // intro | signin | learn | practice | read | checkintro | check | result
+  section: null,
+  netidTail: "",        // last two digits, shown for reassurance only
+  h1: null,             // scrambled id (hex)
+  startedAt: null,
+  learnStep: 0,
+  practiceStep: 0,
+  picks: [null,null,null,null,null],          // final practice pick per scenario
+  firstPicks: [null,null,null,null,null],     // first practice pick per scenario
+  explored: [[],[],[],[],[]],                 // every option viewed per scenario
+  checkStep: 0,
+  checkOrder: null,                           // shuffled option order per check moment
+  answers: [null,null,null,null,null],        // chosen option id per check moment
+  submitted: null,                            // server response for the final submission
+  submitError: null
+};
+
+const app = document.getElementById("app");
+
+/* ---------- LEARN content (one idea per screen) ---------- */
+const LEARN = [
+  {
+    tag:"The big idea",
+    h:"Every message travels through a channel.",
+    body:`A <b>communication channel</b> is simply the way a message gets from you to another person. Talking face to face is a channel. A phone call is a channel. So are email, a Teams chat, a voicemail, and a printed memo.<br><br>You make this choice all day without thinking about it. This week at Northline, we are going to slow it down and make the choice <b>on purpose</b>.`,
+    extra:""
+  },
+  {
+    tag:"Rich vs. lean",
+    h:"Some channels carry more of you than others.",
+    body:`Channels differ in how much human information they carry. We call this <b>richness</b>.`,
+    extra:`<div class="pair">
+      <div class="rich"><h3>Rich channels</h3><p>Carry many cues at once. Voice, tone, facial expression, body language, and <b>instant back and forth</b>. Best when a message is personal, emotional, or easy to misread.</p></div>
+      <div class="lean"><h3>Lean channels</h3><p>Carry fewer cues. Mostly just the words. But they are fast, easy to share, and they <b>leave a record</b>. Best for simple facts, dates, and documentation.</p></div>
+    </div>
+    <p class="mini">Neither one is better. They are good at <b>different jobs</b>.</p>`
+  },
+  {
+    tag:"The richness ladder",
+    h:"Channels stack from richest to leanest.",
+    body:`Here is roughly how everyday workplace channels line up, from the most human cues to the fewest.`,
+    extra:`<div class="channel-list">
+      <div class="row"><span class="rank">1</span><div><b>Face to face.</b> Every cue, instant feedback. The richest.</div></div>
+      <div class="row"><span class="rank">2</span><div><b>Video call.</b> Faces and voice, nearly as rich.</div></div>
+      <div class="row"><span class="rank">3</span><div><b>Phone call.</b> Voice and tone, no faces.</div></div>
+      <div class="row"><span class="rank">4</span><div><b>Live chat / instant message.</b> Fast back and forth, but text only.</div></div>
+      <div class="row"><span class="rank">5</span><div><b>Email.</b> Slower, one direction, but documented.</div></div>
+      <div class="row"><span class="rank">6</span><div><b>Memo / posted notice.</b> Formal, one to many, leanest.</div></div>
+    </div>`
+  },
+  {
+    tag:"The real skill",
+    h:"The goal is to match, not to maximize.",
+    body:`Here is the part most people get wrong. They assume the <b>richest</b> channel is always the best one. It is not.<br><br>A face to face meeting to announce a room change wastes everyone's time. An email to end someone's job strips away every ounce of dignity. The skill is <b>fit</b>. You ask what the message needs, then you choose the channel that delivers it.`,
+    extra:`<div class="callout"><p>Three questions do most of the work:<br><br><b>1. How personal or high stakes is this?</b> The more it touches someone's dignity, income, or feelings, the richer the channel.<br><b>2. How easy is it to misread?</b> The more ambiguous, the more you need tone and instant feedback.<br><b>3. Do I need a record?</b> If yes, written, often <b>paired</b> with a conversation.</p></div>
+    <p>Five practice moments come next. Go with your gut and try every option you are curious about. <b>Practice is not scored.</b> The five moments of <b>The Check</b>, after practice, are.</p>`
+  }
+];
+
+/* ---------- PRACTICE scenarios (explore freely, not scored) ---------- */
+const SCENARIOS = [
+  {
+    tag:"Monday · 9:14 AM",
+    setup:`Your teammate <b>Dana</b> has spent six weeks building a campaign. Leadership just killed it for budget reasons. She does not know yet. You do. She sits one row over.`,
+    who:"The situation",
+    q:"How do you tell Dana the campaign is cancelled?",
+    options:{
+      a:{label:"Walk over and tell her in person, privately, before the news spreads.",
+         reply:`Dana's face falls, then she takes a breath. "Okay. Thank you for telling me yourself. Can you walk me through why?" You can.`,
+         who:"Dana",
+         happened:`You chose the richest channel for a message that was personal and disappointing. Dana could read your tone, ask questions on the spot, and keep her dignity.`,
+         why:`High stakes and emotional messages need <b>full cues and instant feedback</b>. Face to face gave her both, plus the respect of hearing it from a person rather than a screen.`,
+         concept:`This is the textbook case for a <b>rich channel</b>. The harder the news, the more human the delivery should be.`,
+         inds:[
+           {n:"Right richness for the weight", s:"strong", r:"Personal, disappointing news got your richest channel."},
+           {n:"Room to ask questions", s:"strong", r:"Dana could respond and ask why in the moment."},
+           {n:"Respect & dignity", s:"strong", r:"She heard it from a person, in private, first."},
+           {n:"Timing", s:"strong", r:"You reached her before rumors did."}
+         ]},
+      b:{label:"Send her an email laying out the decision and the reasons.",
+         reply:`An hour passes with no reply. Then Dana appears at your desk, quiet and tight. "I had to read that in an email? Sitting ten feet away from you?"`,
+         who:"Dana",
+         happened:`The decision was accurate, but the channel was far too lean for the weight of the message. Email gave her no tone, no chance to respond, and no sign that you saw her as a person.`,
+         why:`Email is one directional and stripped of cues. For news that touches someone's work and feelings, that absence reads as <b>cold or even cowardly</b>, even when you did not mean it that way.`,
+         concept:`This echoes the real layoff cases. Email is fine for the record. Used <b>alone</b> for life sized news, it wounds.`,
+         inds:[
+           {n:"Right richness for the weight", s:"weak", r:"A lean channel carried a heavy, personal message."},
+           {n:"Room to ask questions", s:"weak", r:"One direction. She had to come find you."},
+           {n:"Respect & dignity", s:"weak", r:"Reading it from a desk away felt impersonal."},
+           {n:"Timing", s:"partial", r:"Fast to send, but she sat with it alone first."}
+         ]},
+      c:{label:"Send a quick Teams chat: \"hey, heads up, the campaign got cut. sorry :(\"",
+         reply:`Three dots appear, stop, appear again. "Wait, cut how? Like paused or gone? Who decided?" The questions pile up faster than you can type.`,
+         who:"Dana",
+         happened:`A casual chat made a serious message feel tossed off, and text could not carry your tone. Now you are having the hard conversation anyway, but typed, slowly, and with confusion in between.`,
+         why:`Instant message is great for quick logistics. For something ambiguous and emotional, it is <b>too thin</b>. The cues that would have reassured her are missing.`,
+         concept:`Lean channels make heavy news feel smaller than it is, and force the real conversation to happen later anyway.`,
+         inds:[
+           {n:"Right richness for the weight", s:"weak", r:"A throwaway tone for a serious message."},
+           {n:"Room to ask questions", s:"partial", r:"She can ask, but slowly and without your tone."},
+           {n:"Respect & dignity", s:"weak", r:"\"sorry :(\" undersells the moment."},
+           {n:"Timing", s:"partial", r:"Fast, but it opens a long typed back and forth."}
+         ]},
+      d:{label:"Call her so she at least hears it in your voice.",
+         reply:`"Oh. Okay." A pause. "I appreciate the call. Can we talk for a sec when you have time? I want to understand what happened." Her voice is steady.`,
+         who:"Dana",
+         happened:`A call carried your tone and let her respond right away. It was a strong, humane choice. If she had been across the room, in person would have been even warmer, but voice did real work here.`,
+         why:`Phone is a <b>rich channel</b>. She heard care in your voice and could react in the moment. The only thing it missed was your face.`,
+         concept:`When you cannot be face to face, voice is the next best thing for sensitive news. Far better than text.`,
+         inds:[
+           {n:"Right richness for the weight", s:"strong", r:"Voice carries tone and care for hard news."},
+           {n:"Room to ask questions", s:"strong", r:"Real time back and forth."},
+           {n:"Respect & dignity", s:"strong", r:"She heard a human, not a notification."},
+           {n:"Timing", s:"partial", r:"In person was an option since she was right there."}
+         ]}
+    }
+  },
+  {
+    tag:"Tuesday · 8:02 AM",
+    setup:`The 11:00 staff meeting moved from <b>Room 2 to Room 4</b>. Same day, same time, just a different room. Twelve people need to know before 11:00.`,
+    who:"The situation",
+    q:"How do you let the team know about the room change?",
+    options:{
+      a:{label:"Go desk to desk and tell each person face to face.",
+         reply:`By the eighth desk, someone says, "You walked over here to tell me a room number? You could've just messaged us." A few people you needed were not even in yet.`,
+         who:"A coworker",
+         happened:`You used your richest channel for a tiny factual update. It worked, but it ate your morning, interrupted everyone, and still missed the people who had not arrived.`,
+         why:`Richness is not free. A simple, low stakes fact does not need cues or feedback. Spending your richest channel here is <b>overkill</b>.`,
+         concept:`The richest channel is not the best channel. Matching beats maximizing.`,
+         inds:[
+           {n:"Fit for a simple fact", s:"weak", r:"Far more channel than a room number needs."},
+           {n:"Reaches everyone", s:"weak", r:"Missed people who were not in yet."},
+           {n:"Efficient use of time", s:"weak", r:"It cost you the morning."},
+           {n:"Leaves something to check", s:"weak", r:"Nothing written to look back at."}
+         ]},
+      b:{label:"Post one message to the team Teams channel, or a short group email: \"Reminder: 11:00 meeting is in Room 4 today, not Room 2.\"",
+         reply:`Quick thumbs up reactions roll in. One person who is out today reads it later and still shows up to the right room.`,
+         who:"The team",
+         happened:`One clear written message reached everyone at once, took thirty seconds, and stayed visible for anyone who checked late. Exactly right.`,
+         why:`The message was simple, factual, and low emotion. A <b>lean channel</b> is fast, reaches the whole group, and leaves a record people can re check.`,
+         concept:`For simple facts that many people need, lean and written usually wins.`,
+         inds:[
+           {n:"Fit for a simple fact", s:"strong", r:"A lean channel suits a plain logistical update."},
+           {n:"Reaches everyone", s:"strong", r:"One message, whole team, at once."},
+           {n:"Efficient use of time", s:"strong", r:"Thirty seconds, done."},
+           {n:"Leaves something to check", s:"strong", r:"Latecomers can read it themselves."}
+         ]},
+      c:{label:"Call each of the twelve people one by one.",
+         reply:`Voicemail. Voicemail. "Hi, sorry, what's up?" "Just the room change." "...You called for that?" Three people never pick up.`,
+         who:"Coworkers",
+         happened:`Phone calls carried way more richness than a room number needs, and left no record. Several people missed the call entirely.`,
+         why:`Voice is for nuance and sensitivity. A factual one liner does not need it, and calls do not scale to a group or leave anything to look back at.`,
+         concept:`Rich channels are wasted, and even counterproductive, on simple group facts.`,
+         inds:[
+           {n:"Fit for a simple fact", s:"weak", r:"Voice is overkill for a room number."},
+           {n:"Reaches everyone", s:"weak", r:"Missed calls and voicemail gaps."},
+           {n:"Efficient use of time", s:"weak", r:"Twelve calls for one sentence."},
+           {n:"Leaves something to check", s:"weak", r:"Nothing written remains."}
+         ]},
+      d:{label:"Mention it to whoever you happen to pass in the hallway.",
+         reply:`At 11:00, four people walk into Room 2, look around, and start texting each other. "Wait, where is everyone?"`,
+         who:"The team",
+         happened:`Casual word of mouth was fast for the people you saw, but it had no reach and no record. The people you did not bump into never got the message.`,
+         why:`A hallway mention is the leanest, most informal option. It carries the fact fine, but it <b>reaches no one reliably</b> and leaves nothing to check.`,
+         concept:`A channel has to actually reach the audience. Convenience for you is not the same as coverage for them.`,
+         inds:[
+           {n:"Fit for a simple fact", s:"partial", r:"The fact is simple, but delivery is haphazard."},
+           {n:"Reaches everyone", s:"weak", r:"Only the people you happened to see."},
+           {n:"Efficient use of time", s:"partial", r:"Easy for you, unreliable for them."},
+           {n:"Leaves something to check", s:"weak", r:"No record at all."}
+         ]}
+    }
+  },
+  {
+    tag:"Wednesday · 2:40 PM",
+    setup:`An email thread with <b>Marcus</b> in another department has gone cold. His replies are getting short and clipped. You are almost sure it is a misunderstanding about who owns a task, but every email seems to make it worse.`,
+    who:"The situation",
+    q:"What do you do to fix the tension with Marcus?",
+    options:{
+      a:{label:"Write one more careful email, longer this time, explaining exactly what you meant.",
+         reply:`He replies twenty minutes later: "Noted." That is the whole email. The temperature in the thread somehow drops further.`,
+         who:"Marcus",
+         happened:`You tried to repair a tone problem using the channel that caused it. More text gave him more to read into, and still no warmth or voice to reset the mood.`,
+         why:`Email cannot carry tone, so ambiguity festers. Adding words to a misread thread usually <b>deepens</b> the misread rather than clearing it.`,
+         concept:`When the problem is tone and ambiguity, a lean channel cannot fix it. You need cues it does not carry.`,
+         inds:[
+           {n:"Handles ambiguity", s:"weak", r:"Text gives no tone, so it stays misread."},
+           {n:"Lets you read each other", s:"weak", r:"No voice, no faces, no real time signals."},
+           {n:"Repairs the relationship", s:"weak", r:`"Noted" shows it got colder.`},
+           {n:"Speed to resolution", s:"weak", r:"Another slow round that solved nothing."}
+         ]},
+      b:{label:"Walk over to his desk, or call him: \"Hey, I think we got our wires crossed. Can we sort this out?\"",
+         reply:`"Honestly, yeah, I read your first email as you blaming me." Two minutes of talking and it is clear neither of you meant what the other thought. You both laugh, a little relieved.`,
+         who:"Marcus",
+         happened:`A rich channel let you hear his actual concern, fix the misread in real time, and reset the relationship. The tension dissolved in minutes.`,
+         why:`Ambiguous, emotional, relationship messages need <b>tone and instant feedback</b>. Voice or face to face surfaced the real issue that text kept hiding.`,
+         concept:`When a message is easy to misread, climb the richness ladder. Cues clear up confusion fast.`,
+         inds:[
+           {n:"Handles ambiguity", s:"strong", r:"Tone and feedback cleared the misread."},
+           {n:"Lets you read each other", s:"strong", r:"You could hear what he actually meant."},
+           {n:"Repairs the relationship", s:"strong", r:"It ended with relief, not a cold reply."},
+           {n:"Speed to resolution", s:"strong", r:"Solved in two minutes, not two days."}
+         ]},
+      c:{label:"Forward the whole thread to your manager and ask them to weigh in.",
+         reply:`Your manager replies: "Have you two actually talked? Try that first." Marcus, now cc'd, goes even quieter.`,
+         who:"Your manager",
+         happened:`You escalated a small misunderstanding before trying the direct route, and you did it over the same lean channel. It raised the stakes and made Marcus more defensive.`,
+         why:`Escalating in writing turns a fixable misread into a documented dispute. It also still carries <b>no tone</b>, so the core problem is untouched.`,
+         concept:`Reaching for a record before reaching for a conversation can harden a problem that a quick rich exchange would have dissolved.`,
+         inds:[
+           {n:"Handles ambiguity", s:"weak", r:"Still text, still no tone, now with an audience."},
+           {n:"Lets you read each other", s:"weak", r:"You and Marcus still have not actually talked."},
+           {n:"Repairs the relationship", s:"weak", r:"He got quieter and more guarded."},
+           {n:"Speed to resolution", s:"partial", r:"It got attention, not resolution."}
+         ]},
+      d:{label:"Send a short Teams chat: \"hey are we good?\"",
+         reply:`"Yeah we're fine." You are not sure you believe it. The thread is still sitting there, unresolved.`,
+         who:"Marcus",
+         happened:`A chat was warmer and faster than another email, and it signaled you noticed the tension. But text still hid his tone, so you are left guessing whether it is truly fine.`,
+         why:`Instant message is a step up from email for tone, but it is still <b>text</b>. For real repair, you usually need voice or a face.`,
+         concept:`A lean channel can open the door, but ambiguity often needs a richer one to actually walk through it.`,
+         inds:[
+           {n:"Handles ambiguity", s:"partial", r:"Friendlier, but you still cannot read him."},
+           {n:"Lets you read each other", s:"partial", r:"Text gives a little tone, not enough."},
+           {n:"Repairs the relationship", s:"partial", r:"\"We're fine\" left you unsure."},
+           {n:"Speed to resolution", s:"partial", r:"Quick, but it did not settle anything."}
+         ]}
+    }
+  },
+  {
+    tag:"Thursday · 4:51 PM",
+    setup:`A client call starts in <b>ten minutes</b>. You need the final budget figure from <b>Priya</b>, who works remotely. It is one number. You just need it fast.`,
+    who:"The situation",
+    q:"How do you get the budget number from Priya right now?",
+    options:{
+      a:{label:"Email her and ask for the final figure.",
+         reply:`Your email sits unread. Priya is heads down in another doc and does not check her inbox until 5:30. The client call comes and goes without the number.`,
+         who:"The situation",
+         happened:`Email was an accurate way to ask, but far too slow for something you needed in ten minutes. The right answer arrived after it mattered.`,
+         why:`Email is asynchronous by nature. People check it on their own schedule. For <b>time sensitive</b> requests, it is the wrong fit even when the question is simple.`,
+         concept:`Lean is fine here, but you also need <b>speed</b>. Match the channel to the urgency, not just the content.`,
+         inds:[
+           {n:"Fast enough", s:"weak", r:"She did not see it until after the call."},
+           {n:"Fits a simple ask", s:"strong", r:"One number is well suited to a quick written ask."},
+           {n:"Right effort level", s:"partial", r:"Low effort, but it missed the window."},
+           {n:"Easy for her to answer", s:"partial", r:"Easy to answer, just not in time."}
+         ]},
+      b:{label:"Send her a Teams chat / instant message: \"Quick one, what's the final budget figure? Client call in 10.\"",
+         reply:`A reply pings back in ninety seconds: "It's $84,200. Good luck on the call!" You walk in with the number.`,
+         who:"Priya",
+         happened:`Instant message was fast, simple, and respectful of her focus. She could answer in seconds without dropping everything, and you got what you needed in time.`,
+         why:`Live chat is built for <b>quick, simple, urgent</b> exchanges. It is fast like a call but light enough that it does not interrupt deep work.`,
+         concept:`For a fast, factual request, a lean real time channel is the sweet spot.`,
+         inds:[
+           {n:"Fast enough", s:"strong", r:"Answer in ninety seconds."},
+           {n:"Fits a simple ask", s:"strong", r:"One number, one quick message."},
+           {n:"Right effort level", s:"strong", r:"Light touch for both of you."},
+           {n:"Easy for her to answer", s:"strong", r:"She replied without dropping her work."}
+         ]},
+      c:{label:"Schedule a fifteen minute meeting to go over the budget.",
+         reply:`Your calendar invite lands. The earliest slot Priya has open is tomorrow at 10:00. The client call is in eight minutes.`,
+         who:"The situation",
+         happened:`A meeting is the richest, heaviest option, and wildly out of scale for one number you need immediately. It guarantees you will not get the figure in time.`,
+         why:`Meetings carry the most cues and the most overhead. Using one for a single fact is <b>maximum channel for minimum message</b>.`,
+         concept:`The richest channel is almost never right for a quick, simple, urgent ask.`,
+         inds:[
+           {n:"Fast enough", s:"weak", r:"Soonest slot is tomorrow."},
+           {n:"Fits a simple ask", s:"weak", r:"A meeting for one number is overkill."},
+           {n:"Right effort level", s:"weak", r:"Huge overhead for a tiny request."},
+           {n:"Easy for her to answer", s:"weak", r:"You asked for her calendar, not an answer."}
+         ]},
+      d:{label:"Call her phone right now.",
+         reply:`She picks up on the third ring, a little startled. "Hey, everything okay? Oh, the budget? It's $84,200." You have the number, and she is wondering if something was wrong.`,
+         who:"Priya",
+         happened:`A call got you the answer in time, so it worked. But for a one line factual question, voice was a heavier interruption than the ask required, and it pulled her out of focus.`,
+         why:`Phone is rich and fast, which is why it worked. For a simple fact, though, a quick message would have gotten the same answer with <b>less disruption</b>.`,
+         concept:`When a lighter channel does the job just as fast, the lighter channel usually wins.`,
+         inds:[
+           {n:"Fast enough", s:"strong", r:"You got the number before the call."},
+           {n:"Fits a simple ask", s:"partial", r:"Voice is more than one number needs."},
+           {n:"Right effort level", s:"partial", r:"It interrupted her focus."},
+           {n:"Easy for her to answer", s:"partial", r:"Easy, but she thought something was wrong."}
+         ]}
+    }
+  },
+  {
+    tag:"Friday · 11:30 AM",
+    setup:`On a phone call just now, you and a <b>vendor</b> agreed on new pricing terms for next quarter. Good call, friendly, clear. But it was all spoken. Nothing is written down, and this affects real money.`,
+    who:"The situation",
+    q:"What do you do after the call to make the agreement stick?",
+    options:{
+      a:{label:"Nothing. You both said yes on the call, so it is settled.",
+         reply:`Three weeks later the vendor invoices the old price. "We never agreed to that number." You remember the call clearly. You just cannot prove any of it.`,
+         who:"The vendor",
+         happened:`The conversation was rich and clear, but you left no record. When memories differed later, there was nothing to point to, and the agreement effectively evaporated.`,
+         why:`Voice is excellent for working things out, but it <b>vanishes</b>. Decisions that affect money or obligations need something written to anchor them.`,
+         concept:`Rich channels are great for reaching agreement. Lean written channels are what make it <b>stick</b>.`,
+         inds:[
+           {n:"Creates a record", s:"weak", r:"Nothing written exists to point to."},
+           {n:"Confirms the details", s:"weak", r:"No shared text to catch a mismatch."},
+           {n:"Protects both sides", s:"weak", r:"Neither party can prove the terms."},
+           {n:"Keeps the relationship warm", s:"partial", r:"Friendly now, strained when it unravels."}
+         ]},
+      b:{label:"Send a short follow up email: \"Great talking. Confirming what we agreed: [terms]. Let me know if I missed anything.\"",
+         reply:`The vendor replies within the hour: "Looks right, thanks for putting it in writing. One small tweak on the delivery date." You fix it. Now it is solid.`,
+         who:"The vendor",
+         happened:`You paired the channels. The call did the human work of reaching agreement, and the email captured it, invited a correction, and created a record you can both rely on.`,
+         why:`This is the move the real layoff cases point to in reverse. The rich channel handles the conversation, the <b>lean channel handles the record</b>. Together they cover what neither does alone.`,
+         concept:`The strongest choice is often not one channel. It is the right <b>pair</b>: rich to align, written to document.`,
+         inds:[
+           {n:"Creates a record", s:"strong", r:"A written summary now exists for both of you."},
+           {n:"Confirms the details", s:"strong", r:"The email caught and fixed a small mismatch."},
+           {n:"Protects both sides", s:"strong", r:"Clear terms, agreed in writing."},
+           {n:"Keeps the relationship warm", s:"strong", r:"Friendly and professional, all at once."}
+         ]},
+      c:{label:"Send the summary as a Teams chat instead.",
+         reply:`The vendor reacts with a thumbs up. Two months on, you go looking for the terms and have to scroll through hundreds of unrelated chat messages to find them.`,
+         who:"The vendor",
+         happened:`A chat did capture the terms, which beats nothing. But instant messages are informal and hard to find later, so the record is weak and easy to lose.`,
+         why:`Chat leaves a record in theory, but it is <b>fragile</b>. It buries quickly, feels casual for a financial agreement, and is harder to treat as official.`,
+         concept:`A record only helps if it is durable and findable. For agreements that matter, formal beats casual.`,
+         inds:[
+           {n:"Creates a record", s:"partial", r:"It exists, but it buries fast."},
+           {n:"Confirms the details", s:"partial", r:"A thumbs up is a thin confirmation."},
+           {n:"Protects both sides", s:"partial", r:"Informal and hard to surface later."},
+           {n:"Keeps the relationship warm", s:"strong", r:"Friendly enough."}
+         ]},
+      d:{label:"Call the vendor back to re-confirm the terms out loud.",
+         reply:`"Yep, same as we said, all good!" Warm and clear again. And again, completely unwritten.`,
+         who:"The vendor",
+         happened:`A second call reinforced the agreement between people, but it repeated the same gap as the first one. Still nothing on paper.`,
+         why:`Repeating a rich channel does not solve a <b>documentation</b> problem. Two clear conversations still leave zero record.`,
+         concept:`When the missing ingredient is a record, adding more conversation will not supply it. You need the written channel.`,
+         inds:[
+           {n:"Creates a record", s:"weak", r:"Still nothing written down."},
+           {n:"Confirms the details", s:"partial", r:"Confirmed by voice, not captured."},
+           {n:"Protects both sides", s:"weak", r:"No proof if memories diverge."},
+           {n:"Keeps the relationship warm", s:"strong", r:"Very friendly, just unrecorded."}
+         ]}
+    }
+  }
+];
+
+/* ---------- THE CHECK: five new moments, answered once, scored ---------- */
+/* Each option: id, label, s (strong 2 · partial 1 · weak 0), reply, why. Option order is shuffled per student. */
+const CHECK = [
+  {
+    tag:"Week 2 · Monday · 10:05 AM",
+    setup:`In the hallway, your manager <b>Renee</b> says yes to something you have wanted for months: starting next month, you can work from home on Fridays. She is already walking to her next meeting.`,
+    who:"The situation",
+    q:"What do you do with that hallway yes?",
+    options:[
+      {id:"email", s:"strong", label:"Send Renee a short email: \"Thank you for the green light this morning. Confirming: remote Fridays starting October 2. Let me know if I have that wrong.\"",
+       reply:`"Yes, that's it. Thanks for writing it down, I might have forgotten the date." Renee, four minutes later.`,
+       why:`A rich channel got you the agreement. A short written note made it <b>stick</b>. Renee could correct any detail, and you both have something to point to next month.`},
+      {id:"chat", s:"partial", label:"Send her a Teams chat: \"thanks again for the Fridays thing!!\"",
+       reply:`A heart reaction. Nothing else. Next month, when the schedule is questioned, nobody can find what "the Fridays thing" meant.`,
+       why:`A chat leaves a trace, but a thin and casual one. It records that something happened without capturing <b>what</b> was agreed or when it starts.`},
+      {id:"nothing", s:"weak", label:"Nothing. She said yes. You will just start working from home on the first Friday of next month.",
+       reply:`First Friday of next month, 9:10 AM. A message from Renee: "Where are you? We have the client walkthrough this morning." She does not remember agreeing to Fridays.`,
+       why:`Spoken agreements <b>evaporate</b>. When the memory on one side fades, there is nothing written to restore it, and you are the one who looks unreliable.`},
+      {id:"coworkers", s:"weak", label:"Tell two coworkers about the new arrangement so people know where you will be on Fridays.",
+       reply:`By Wednesday, three other people have asked Renee for remote Fridays too. She looks at you: "I thought we were keeping that between us for now."`,
+       why:`This creates <b>news</b> but no record. It spreads a private arrangement through the wrong channel and still leaves the actual terms undocumented.`}
+    ]
+  },
+  {
+    tag:"Week 2 · Tuesday · 1:52 PM",
+    setup:`<b>Lena</b> presents to the board at 2:00. She is in the boardroom in the other building, phone in hand, waiting to be called in. The revenue figure on her slide 4 just changed: it is <b>$1.9 million, not $2.1 million</b>. She needs the new number before she stands up.`,
+    who:"The situation",
+    q:"How do you get the corrected number to Lena?",
+    options:[
+      {id:"chat", s:"strong", label:"Text or chat her right now: \"Slide 4 revenue is $1.9M, not $2.1M. Everything else holds. Good luck.\"",
+       reply:`A thumbs up appears eleven seconds later. At 2:00 she walks in and says $1.9 million.`,
+       why:`One simple, urgent fact needed a channel that is <b>fast and light</b>. A message reached her instantly without pulling her out of her focus, and it left the number on her screen to glance at.`},
+      {id:"call", s:"partial", label:"Call her phone.",
+       reply:`It rings twice, then stops. She has silenced it because she is about to walk in. Your voicemail sits unheard until 3:15.`,
+       why:`Voice is fast, but in the minutes before a presentation it is the <b>heaviest</b> interruption, and an unanswered call carries nothing. The number needed to be visible, not audible.`},
+      {id:"email", s:"weak", label:"Email her the updated slide deck with the corrected figure.",
+       reply:`The email arrives at 1:53. Lena checks her inbox at 3:40, after the board has already asked why her revenue did not match the finance report.`,
+       why:`Email is <b>asynchronous</b>. People read it on their own schedule. For something needed in eight minutes, the right channel has to interrupt gently, right now.`},
+      {id:"meeting", s:"weak", label:"Put a fifteen minute meeting on both calendars to walk her through the change.",
+       reply:`The earliest open slot is Thursday. The board hears $2.1 million today.`,
+       why:`A meeting is the richest and slowest option. For a single number with an eight minute deadline, it is <b>maximum channel for minimum message</b>, and it misses the moment entirely.`}
+    ]
+  },
+  {
+    tag:"Week 2 · Wednesday · 9:30 AM",
+    setup:`<b>Theo</b>, who reports to you, has arrived late four times this month. He is a good worker and he seems tired. You have to address it today. He sits across the open office.`,
+    who:"The situation",
+    q:"How do you raise the lateness with Theo?",
+    options:[
+      {id:"private", s:"strong", label:"Ask him to step into a meeting room for a private five minute conversation, then send a two line recap afterward.",
+       reply:`"I know. My daughter's daycare moved and the new drop off is a mess." Ten minutes later you have a plan: he starts at 9:30 for two weeks and makes up the time. Your recap email captures it.`,
+       why:`A personal, high stakes message got a <b>rich, private</b> channel, so he could explain and you could hear the real cause. The short written recap gave the plan a record without making the conversation cold.`},
+      {id:"invite", s:"partial", label:"Send a calendar invite for tomorrow titled \"Attendance\" with no other details.",
+       reply:`Theo stares at the invite for the rest of the day. He barely sleeps. The conversation tomorrow will be rich, but he arrives braced for the worst.`,
+       why:`You reached for a rich channel, which is right, but the <b>cold, lean announcement</b> of it did damage first. A quiet "got a minute?" would have opened the same conversation without a night of dread.`},
+      {id:"email", s:"weak", label:"Email him the four dates he was late and a copy of the attendance policy.",
+       reply:`"Understood." One word back. He is on time the next day, silent in every meeting for a week, and updating his resume by Friday.`,
+       why:`A message that touches someone's dignity and job security arrived through a channel with <b>no tone and no reply</b>. It solved the clock and damaged the person.`},
+      {id:"standup", s:"weak", label:"Mention it in the team stand-up: \"Let's all be here by 9, some of us have been slipping.\"",
+       reply:`Everyone glances at Theo. Two people message him afterward to ask if he is okay. He never learns what you actually wanted to say to him.`,
+       why:`A personal message delivered to a <b>group</b> costs the person his privacy and dignity, and it never becomes the real conversation he needed.`}
+    ]
+  },
+  {
+    tag:"Week 2 · Thursday · 8:15 AM",
+    setup:`The main parking lot is being repaved <b>next Monday and Tuesday</b>. All sixty people in the building must use the east lot on those two days. Nobody knows yet.`,
+    who:"The situation",
+    q:"How do you tell the building?",
+    options:[
+      {id:"broadcast", s:"strong", label:"Send one clear all-staff email today and pin the same note in the building's Teams channel.",
+       reply:`Two questions come back within the hour, both easy. On Monday the east lot fills up smoothly. Someone who was out sick this week reads the pinned note Sunday night.`,
+       why:`A simple fact that sixty people need is the classic job for a <b>lean, written, one to many</b> channel. It reached everyone at once and stayed visible for anyone who checked late.`},
+      {id:"sign", s:"partial", label:"Post a large sign at the entrance of the main lot on Monday morning.",
+       reply:`Monday, 8:40 AM. Cars are backed up to the street while drivers read the sign, turn around, and hunt for the east lot.`,
+       why:`A posted notice is a fine lean channel, but it arrived <b>too late to plan around</b>. The message had to reach people before the day started, not at the moment of the problem.`},
+      {id:"individually", s:"weak", label:"Tell people one by one as you run into them this week.",
+       reply:`By Friday you have reached maybe twenty people. Monday morning, thirty cars pull into a lot full of asphalt trucks.`,
+       why:`Word of mouth is fast for the people in front of you and <b>invisible to everyone else</b>. It has no reach and no record.`},
+      {id:"allhands", s:"weak", label:"Call a twenty minute all-hands meeting this afternoon to explain the parking plan.",
+       reply:`Sixty people stop working to hear one sentence. Someone in the back says, "Could this have been an email?" It could have.`,
+       why:`Your richest, most expensive channel was spent on a fact that needed no tone, no discussion, and no feedback. <b>Matching beats maximizing.</b>`}
+    ]
+  },
+  {
+    tag:"Week 2 · Friday · 3:20 PM",
+    setup:`You emailed a client, <b>Ms. Okafor</b>, proposing to move her project deadline by a week. Her whole reply is: <i>"Fine. Do whatever you think is best."</i> You cannot tell whether she means it or whether she is annoyed.`,
+    who:"The situation",
+    q:"What do you do with that reply?",
+    options:[
+      {id:"call", s:"strong", label:"Call her: \"I got your note and wanted to check in properly. How are you feeling about the new date?\"",
+       reply:`A pause, then honesty: "I'm frustrated. This is the second delay." Five minutes of listening, one adjustment to the plan, and the call ends warmer than it started.`,
+       why:`An ambiguous, possibly emotional message needed <b>tone and instant feedback</b>. Voice surfaced the real feeling that text was hiding, and gave you a chance to repair it while it was small.`},
+      {id:"askemail", s:"partial", label:"Reply by email: \"Thank you. Would you like to talk it through on a quick call? I want to make sure this works for you.\"",
+       reply:`"No need." Two words, an hour later. You still do not know where you stand, but at least you left the door open.`,
+       why:`You sensed the ambiguity and offered a richer channel, which is a good instinct. But the offer itself traveled through the <b>same lean channel</b>, so it was easy for her to wave off.`},
+      {id:"proceed", s:"weak", label:"Reply: \"Great, thanks! I'll proceed with the new date.\"",
+       reply:`Two weeks later her boss calls your boss. The words were fine. The feeling behind them was not, and nobody checked.`,
+       why:`You read a cool, ambiguous message as approval and answered it with a <b>cheerful lean reply</b>. Text cannot carry the doubt you actually felt, so the misread stayed alive.`},
+      {id:"forward", s:"weak", label:"Forward the thread to your manager and ask how to interpret it.",
+       reply:`Your manager writes back: "Have you tried picking up the phone?" You have not.`,
+       why:`Escalating in writing turned a simple check-in into a <b>documented worry</b>, and still carried none of the tone that would have answered your question in two minutes.`}
+    ]
+  }
+];
+
+/* ---------- TOOLKIT ---------- */
+const TOOLKIT = [
+  {h:"The richness ladder, in your pocket",
+   body:`Face to face, video, phone, live chat, email, memo. Richest at the top, leanest at the bottom. Climb up for cues and feedback. Move down for speed, reach, and a record.`},
+  {h:"Ask the three questions",
+   body:`How personal or high stakes is this? How easy is it to misread? Do I need a record? Your answers point straight at the right rung.`,
+   example:`Personal and high stakes pulls you up the ladder. Simple and factual lets you drop down.`},
+  {h:"Match, do not maximize",
+   body:`The richest channel is not the best channel. A meeting for a room change wastes everyone. An email for a layoff wounds. Fit is the whole skill.`},
+  {h:"Pair the channels when you need both",
+   body:`Reach agreement in a rich channel, then capture it in a lean one. Have the hard conversation in person, then send the written follow up. The pair covers what neither does alone.`,
+   example:`Call to align on terms, then email to confirm them. Tell the news in person, then document it.`}
+];
+
+/* =========================================================================
+   PERSISTENCE (this browser only, cleared when the tab closes)
+   ========================================================================= */
+function save(){
+  try { sessionStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){}
+}
+function restore(){
+  try {
+    const raw = sessionStorage.getItem(STORE_KEY);
+    if(!raw) return false;
+    const s = JSON.parse(raw);
+    if(!s || s.version !== CONFIG.VERSION) return false;
+    Object.assign(state, s);
+    return true;
+  } catch(e){ return false; }
+}
+
+/* =========================================================================
+   IDENTITY (scrambled locally) AND NETWORK
+   ========================================================================= */
+function normalizeId(raw){
+  const s = String(raw || "").trim().toLowerCase();
+  const digits = s.replace(/\D/g, "");
+  if(digits.length === 8) return digits;
+  return s.split("@")[0].replace(/\s+/g, "");
+}
+async function sha256Hex(text){
+  const buf = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest("SHA-256", buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+async function scramble(netid){
+  return sha256Hex(CONFIG.SALT1 + "|" + netid);
+}
+async function post(payload, timeoutMs){
+  if(!CONFIG.ENDPOINT || CONFIG.ENDPOINT.indexOf("http") !== 0) return { ok:false, error:"no_endpoint" };
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs || 25000);
+  try {
+    const res = await fetch(CONFIG.ENDPOINT, { method:"POST", body: JSON.stringify(payload), signal: ctrl.signal });
+    const text = await res.text();
+    try { return JSON.parse(text); } catch(e){ return { ok:false, error:"bad_response" }; }
+  } catch(e) {
+    return { ok:false, error: (e && e.name === "AbortError") ? "timeout" : "network" };
+  } finally { clearTimeout(t); }
+}
+function basePayload(){
+  return { h1: state.h1, section: state.section, activity: CONFIG.ACTIVITY, clientVersion: CONFIG.VERSION };
+}
+function pingStart(){
+  const p = basePayload(); p.action = "start";
+  post(p, 15000).then(r => { if(r && r.ok && r.recordId) { state.recordId = r.recordId; save(); } });
+}
+
+/* =========================================================================
+   SCORING
+   ========================================================================= */
+function checkStatuses(){
+  return CHECK.map((m, i) => {
+    const id = state.answers[i];
+    const o = id ? m.options.find(x => x.id === id) : null;
+    return o ? o.s : null;
+  });
+}
+function score(){
+  return checkStatuses().reduce((sum, s) => sum + (s ? CONFIG.POINTS[s] : 0), 0);
+}
+const MAX_SCORE = TOTAL_CHECK * CONFIG.POINTS.strong;
+
+/* deterministic shuffle so a reload keeps the same option order for this student */
+function seededOrder(seedText){
+  let seed = 0;
+  for(let i=0;i<seedText.length;i++){ seed = (seed * 31 + seedText.charCodeAt(i)) >>> 0; }
+  const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  return CHECK.map(m => {
+    const idx = m.options.map((_, i) => i);
+    for(let i=idx.length-1;i>0;i--){ const j = Math.floor(rand()*(i+1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    return idx;
+  });
+}
+
+/* =========================================================================
+   RENDER
+   ========================================================================= */
+function progressBar(phaseClass, label, total, currentIdx){
+  let dots = "";
+  for(let i=0;i<total;i++){
+    let cls = "dot";
+    if(i < currentIdx) cls += " done";
+    else if(i === currentIdx) cls += " on";
+    dots += `<span class="${cls}"></span>`;
+  }
+  return `<div class="progress">
+    <span class="phase ${phaseClass}">${label}</span>
+    <span class="dots">${dots}</span>
+    <span class="step-label">Step ${currentIdx+1} of ${total}</span>
+  </div>`;
+}
+function whoStrip(){
+  if(!state.section) return "";
+  const sec = CONFIG.SECTIONS[state.section] || { label: state.section };
+  const rid = state.recordId ? `Record ${shortId(state.recordId)}` : (state.h1 ? `Record B-${shortId(state.h1)}` : "");
+  return `<div class="who-strip"><span>${sec.label} · NetID ending in <b>${state.netidTail}</b></span><span>${rid}</span></div>`;
+}
+function shortId(h){ return h ? h.slice(0,6).toUpperCase() : ""; }
+
+function render(){
+  window.scrollTo({top:0, behavior:"auto"});
+  save();
+  if(state.screen === "intro") return renderIntro();
+  if(state.screen === "signin") return renderSignin();
+  if(state.screen === "learn") return renderLearn();
+  if(state.screen === "practice") return renderPractice();
+  if(state.screen === "read") return renderRead();
+  if(state.screen === "checkintro") return renderCheckIntro();
+  if(state.screen === "check") return renderCheck();
+  if(state.screen === "result") return renderResult();
+}
+
+function renderIntro(){
+  app.innerHTML = `
+  <div class="screen">
+    <div class="card stagger">
+      <span class="kicker">Business Communication · Unit 1 · In Class Activity</span>
+      <h1>Your Week at Northline</h1>
+      <p style="font-size:20px; color:var(--ink-soft); margin-top:0">Choosing the right communication medium, one decision at a time.</p>
+      <p>You just started at <b>Northline</b>. Over five days, ordinary moments will land on your desk. A teammate who needs hard news. A room that changed. A thread that turned cold. Each time, you will choose <b>how</b> to communicate, not just what to say.</p>
+      <div class="block b-why" style="margin-top:18px">
+        <h3>How this works</h3>
+        <p><b>Learn</b> first. Four short ideas, one screen at a time, starting from zero.<br><br><b>Practice</b> next. Five workplace moments. Pick an option, see how the other person actually reacts, and find out why. Try every option you are curious about. Practice is not scored.<br><br><b>The Check</b> last. Five new moments from your second week. One answer each, no retries. This is the part that is scored, out of <b>${MAX_SCORE} points</b>.</p>
+      </div>
+      <p class="mini">About <b>20 to 25 minutes</b>. Your result is recorded for Professor Calafiore at the end. Do it in one sitting, in this same tab.</p>
+      <div class="btn-row">
+        <button class="btn" onclick="goSignin()">Start →</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function goSignin(){ state.screen = "signin"; render(); }
+
+function renderSignin(){
+  const params = new URLSearchParams(location.search);
+  const preset = params.get("s");
+  if(!state.section && preset && CONFIG.SECTIONS[preset]) state.section = preset;
+  const secButtons = Object.keys(CONFIG.SECTIONS).map(k => {
+    const s = CONFIG.SECTIONS[k];
+    return `<button type="button" class="${state.section===k?'on':''}" onclick="pickSection('${k}')">${s.label}<small>${s.sub}</small></button>`;
+  }).join("");
+  app.innerHTML = `
+  <div class="screen">
+    <div class="card stagger">
+      <span class="kicker">Before you start</span>
+      <h2>Sign in with your NetID.</h2>
+      <p>Your NetID is the <b>8 digit number</b> you use to log in to Blackboard, the part before <i>@student.commnet.edu</i>.</p>
+      <div class="field">
+        <label>Your section</label>
+        <div class="seg">${secButtons}</div>
+      </div>
+      <div class="field">
+        <label for="netid">Your NetID</label>
+        <input id="netid" inputmode="numeric" autocomplete="off" placeholder="12345678" maxlength="40" value="${state.typedId ? state.typedId : ""}">
+        <div class="hint">Eight digits. Type it carefully: this is how your result reaches the grade book.</div>
+      </div>
+      <div class="err" id="err"></div>
+      <div id="confirmBox"></div>
+      <div class="btn-row">
+        <button class="btn" id="signinBtn" onclick="submitSignin()">Continue →</button>
+      </div>
+      <div class="privacy"><b>What is recorded:</b> a scrambled version of your NetID, your section, your choices, your score, and the time. <b>What is never sent or stored:</b> your name, your email, or your NetID itself. The scrambling happens in this browser before anything leaves your device, and only Professor Calafiore can match the result back to the class roster.</div>
+    </div>
+  </div>`;
+  const inp = document.getElementById("netid");
+  inp.addEventListener("input", () => { state.typedId = inp.value; state.confirmId = null; document.getElementById("confirmBox").innerHTML = ""; document.getElementById("signinBtn").style.display = ""; });
+  inp.addEventListener("keydown", e => { if(e.key === "Enter") submitSignin(); });
+  setTimeout(() => inp.focus(), 50);
+}
+function pickSection(k){ state.section = k; state.confirmId = null; renderSignin(); }
+function editId(){ state.confirmId = null; document.getElementById("confirmBox").innerHTML = ""; document.getElementById("signinBtn").style.display = ""; document.getElementById("netid").focus(); }
+
+async function submitSignin(){
+  const err = document.getElementById("err");
+  const raw = document.getElementById("netid").value;
+  const id = normalizeId(raw);
+  if(!state.section){ err.textContent = "Pick your section first."; return; }
+  if(!/^\d{8}$/.test(id)){ err.textContent = "That does not look like an 8 digit NetID. Check it and try again."; return; }
+  if(!state.confirmId || state.confirmId !== id){
+    state.confirmId = id;
+    err.innerHTML = "";
+    const box = document.getElementById("confirmBox");
+    box.innerHTML = `<div class="block b-clay" style="margin-top:14px"><h3>Is this right?</h3><p>NetID <b style="font-size:22px; letter-spacing:2px">${id.slice(0,4)} ${id.slice(4)}</b> · ${CONFIG.SECTIONS[state.section].label}</p><div class="btn-row"><button class="btn" onclick="submitSignin()">Yes, that is me →</button><button class="btn ghost" onclick="editId()">Let me fix it</button></div></div>`;
+    document.getElementById("signinBtn").style.display = "none";
+    return;
+  }
+  const btn = document.getElementById("signinBtn");
+  btn.disabled = true; btn.textContent = "One moment…";
+  try {
+    state.h1 = await scramble(id);
+  } catch(e) {
+    err.textContent = "Your browser could not scramble the ID. Open this page in Chrome, Safari, or Edge and try again.";
+    btn.disabled = false; btn.textContent = "Continue →";
+    return;
+  }
+  state.netidTail = id.slice(-2);
+  state.typedId = ""; state.confirmId = null;
+  state.startedAt = new Date().toISOString();
+  state.checkOrder = seededOrder(state.h1);
+  pingStart();
+  state.screen = "learn"; state.learnStep = 0;
+  render();
+}
+
+function renderLearn(){
+  const item = LEARN[state.learnStep];
+  const last = state.learnStep === TOTAL_LEARN-1;
+  app.innerHTML = `
+  <div class="screen">
+    ${whoStrip()}
+    ${progressBar("learn","Learn",TOTAL_LEARN,state.learnStep)}
+    <div class="card stagger">
+      <span class="situation-tag">${item.tag}</span>
+      <h2>${item.h}</h2>
+      <p>${item.body}</p>
+      ${item.extra || ""}
+      <div class="btn-row">
+        ${state.learnStep>0 ? `<button class="btn ghost" onclick="learnPrev()">← Back</button>`:""}
+        ${last
+          ? `<button class="btn" onclick="goPractice()">Begin the five practice moments →</button>`
+          : `<button class="btn" onclick="learnNext()">Next idea →</button>`}
+      </div>
+    </div>
+  </div>`;
+}
+function learnNext(){ if(state.learnStep<TOTAL_LEARN-1){state.learnStep++; render();} }
+function learnPrev(){ if(state.learnStep>0){state.learnStep--; render();} }
+function goPractice(){ state.screen="practice"; state.practiceStep=0; render(); }
+
+function renderPractice(){
+  const idx = state.practiceStep;
+  const sc = SCENARIOS[idx];
+  const pick = state.picks[idx];
+
+  let optionsHTML = "";
+  ["a","b","c","d"].forEach(letter=>{
+    const o = sc.options[letter];
+    const viewed = pick && pick !== letter ? `<span class="opt-viewed">↺ Try this one</span>` : "";
+    optionsHTML += `
+      <button class="opt ${letter}" onclick="choose('${letter}')">
+        <span class="opt-badge ${letter}">${letter.toUpperCase()}</span>
+        <span class="opt-text">${o.label}${viewed}</span>
+      </button>`;
+  });
+
+  let reactionHTML = "";
+  if(pick){
+    const o = sc.options[pick];
+    let indsHTML = "";
+    o.inds.forEach(ind=>{
+      const symbol = ind.s==="strong" ? "Strong" : ind.s==="partial" ? "Partial" : "Weak spot";
+      indsHTML += `
+        <div class="ind">
+          <div class="ind-head">
+            <span class="ind-name">${ind.n}</span>
+            <span class="ind-status ${ind.s}">${symbol}</span>
+          </div>
+          <p class="ind-reason">${ind.r}</p>
+        </div>`;
+    });
+    const last = idx === TOTAL_PRACTICE-1;
+    reactionHTML = `
+      <div class="reply-bubble screen">
+        <span class="who">${o.who} reacts</span>
+        <span class="text">${o.reply}</span>
+      </div>
+      <div class="block b-happened"><h3>What happened</h3><p>${o.happened}</p></div>
+      <div class="block b-why"><h3>Why it played out that way</h3><p>${o.why}</p></div>
+      <div class="block b-indicators">
+        <h3>Reading your choice</h3>
+        <div class="ind-grid">${indsHTML}</div>
+      </div>
+      <div class="block b-concept"><h3>The concept underneath</h3><p>${o.concept}</p></div>
+      <div class="btn-row">
+        <button class="btn ghost" onclick="reChoose()">↺ Try a different choice</button>
+        ${last
+          ? `<button class="btn" onclick="goRead()">See your read →</button>`
+          : `<button class="btn" onclick="nextScenario()">Next moment →</button>`}
+      </div>`;
+  }
+
+  app.innerHTML = `
+  <div class="screen">
+    ${whoStrip()}
+    ${progressBar("practice","Practice · not scored",TOTAL_PRACTICE,idx)}
+    <div class="card">
+      <span class="situation-tag">${sc.tag}</span>
+      <div class="msg-bubble">
+        <span class="who">${sc.who}</span>
+        <span class="text">${sc.setup}</span>
+      </div>
+      <p class="q-prompt">${sc.q}</p>
+      <div class="options">${optionsHTML}</div>
+      ${reactionHTML}
+    </div>
+  </div>`;
+}
+function choose(letter){
+  const i = state.practiceStep;
+  state.picks[i] = letter;
+  if(!state.firstPicks[i]) state.firstPicks[i] = letter;
+  if(state.explored[i].indexOf(letter) < 0) state.explored[i].push(letter);
+  render();
+}
+function reChoose(){ state.picks[state.practiceStep] = null; render(); }
+function nextScenario(){ if(state.practiceStep<TOTAL_PRACTICE-1){state.practiceStep++; render();} }
+function goRead(){ state.screen="read"; render(); }
+
+/* a gentle, non graded tendency read of the practice picks */
+function tendencyRead(){
+  const reach = [
+    {a:2,b:0,c:0,d:2},
+    {a:2,b:0,c:2,d:0},
+    {a:0,b:2,c:0,d:1},
+    {a:0,b:1,c:2,d:2},
+    {a:0,b:0,c:1,d:2}
+  ];
+  let total = 0, counted = 0;
+  state.picks.forEach((p,i)=>{ if(p){ total += reach[i][p]; counted++; } });
+  if(counted===0) return "You moved through the week without locking in choices, which is fine. The pattern to notice is simply this: the right channel changes with the message in front of you.";
+  const avg = total/counted;
+  if(avg >= 1.4) return "You lean toward <b>richer channels</b>. That instinct is a real strength when a message is personal, emotional, or easy to misread. Your growth edge is the opposite reflex: noticing the moments when a quick message or a short email would actually serve people better, and resisting the urge to over deliver.";
+  if(avg <= 0.6) return "You lean toward <b>lean, efficient channels</b>. That instinct keeps you fast and keeps a clean record, which matters more than people realize. Your growth edge is sensing the moments that ask for more of you: the heavy news, the tense thread, the conversation that needs a voice and a face.";
+  return "Your choices moved <b>up and down the ladder</b> with the situation rather than defaulting to one channel. That flexibility is the whole skill. The work from here is sharpening the judgment call in the genuinely mixed moments, where a message needs both a human touch and a written record.";
+}
+
+function renderRead(){
+  let rows = "";
+  SCENARIOS.forEach((sc,i)=>{
+    const p = state.picks[i];
+    const label = p ? sc.options[p].label : "No choice locked in";
+    const letterTag = p ? `<b>Option ${p.toUpperCase()}.</b> ` : "";
+    rows += `
+      <div class="choice-row">
+        <span class="num">${i+1}</span>
+        <div>
+          <div class="sit">${sc.tag}</div>
+          <div class="pick">${letterTag}${label}</div>
+        </div>
+      </div>`;
+  });
+  app.innerHTML = `
+  <div class="screen">
+    ${whoStrip()}
+    <div class="progress"><span class="phase">Your Read</span><span class="step-label">A look at your practice week</span></div>
+    <div class="card stagger">
+      <span class="kicker">Your week at Northline</span>
+      <h2>Here is the read on your practice choices.</h2>
+      <div class="profile">
+        <h3>The pattern</h3>
+        <p>${tendencyRead()}</p>
+      </div>
+      <h3 style="margin-top:24px">The five moments, the way you last played them</h3>
+      ${rows}
+      <div class="callout" style="margin-top:20px">
+        <p>Practice had no score. Real communicators do not memorize a chart. They <b>read the message</b> in front of them and choose a channel that fits its weight, its risk of being misread, and whether it needs to be remembered. The Check asks you to do exactly that with five moments you have not seen.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost" onclick="backToPractice()">← Revisit a practice moment</button>
+        <button class="btn" onclick="goCheckIntro()">Go to The Check →</button>
+      </div>
+    </div>
+  </div>`;
+}
+function backToPractice(){ state.screen="practice"; render(); }
+function goCheckIntro(){ state.screen="checkintro"; render(); }
+
+function renderCheckIntro(){
+  let tools = "";
+  TOOLKIT.forEach(t=>{
+    tools += `<div class="tool"><h3>${t.h}</h3><p>${t.body}</p>${t.example?`<p class="example"><b>For example.</b> ${t.example}</p>`:""}</div>`;
+  });
+  app.innerHTML = `
+  <div class="screen">
+    ${whoStrip()}
+    <div class="progress"><span class="phase check">The Check</span><span class="step-label">Read this first</span></div>
+    <div class="card stagger">
+      <span class="kicker">Your second week at Northline</span>
+      <h2>Five new moments. One answer each.</h2>
+      <p>The rules change here. Each moment gives you four options. <b>The first option you click is your answer.</b> There is no "try a different choice." You will see how it played out and why, then move on. Each moment is worth <b>${CONFIG.POINTS.strong} points</b>: a strong fit earns ${CONFIG.POINTS.strong}, a partial fit earns ${CONFIG.POINTS.partial}, a poor fit earns 0. Out of ${MAX_SCORE}.</p>
+      <div class="block b-clay"><h3>Take the toolkit with you</h3><p>These four ideas are all you need. Read them once more, slowly.</p></div>
+      ${tools}
+      <div class="btn-row">
+        <button class="btn ghost" onclick="goRead()">← Back to my read</button>
+        <button class="btn" onclick="goCheck()">I am ready. Begin The Check →</button>
+      </div>
+    </div>
+  </div>`;
+}
+function goCheck(){ state.screen="check"; state.checkStep = firstUnanswered(); render(); }
+function firstUnanswered(){ const i = state.answers.findIndex(a => !a); return i < 0 ? TOTAL_CHECK-1 : i; }
+
+function renderCheck(){
+  const idx = state.checkStep;
+  const m = CHECK[idx];
+  const order = (state.checkOrder && state.checkOrder[idx]) || m.options.map((_, i) => i);
+  const answered = state.answers[idx];
+  const letters = ["a","b","c","d"];
+
+  let optionsHTML = "";
+  order.forEach((optIndex, pos) => {
+    const o = m.options[optIndex];
+    const letter = letters[pos];
+    const chosen = answered === o.id;
+    optionsHTML += `
+      <button class="opt ${letter} ${chosen?'chosen':''}" ${answered?'disabled':''} onclick="answer('${o.id}')">
+        <span class="opt-badge ${letter}">${letter.toUpperCase()}</span>
+        <span class="opt-text">${o.label}</span>
+      </button>`;
+  });
+
+  let reactionHTML = "";
+  if(answered){
+    const o = m.options.find(x => x.id === answered);
+    const label = o.s==="strong" ? "Strong fit" : o.s==="partial" ? "Partial fit" : "Poor fit";
+    const last = idx === TOTAL_CHECK-1;
+    reactionHTML = `
+      <div class="reply-bubble screen">
+        <span class="who">How it played out</span>
+        <span class="text">${o.reply}</span>
+      </div>
+      <div class="block b-why"><h3>Why</h3><p>${o.why}</p></div>
+      <div class="ind" style="margin-bottom:6px"><div class="ind-head"><span class="ind-name">Your answer</span><span class="ind-status ${o.s}">${label} · ${CONFIG.POINTS[o.s]} of ${CONFIG.POINTS.strong}</span></div></div>
+      <div class="btn-row">
+        ${last
+          ? `<button class="btn" onclick="finish()">Finish and record my result →</button>`
+          : `<button class="btn" onclick="nextCheck()">Next moment →</button>`}
+      </div>`;
+  }
+
+  app.innerHTML = `
+  <div class="screen">
+    ${whoStrip()}
+    ${progressBar("check","The Check · scored",TOTAL_CHECK,idx)}
+    <div class="card">
+      <span class="situation-tag">${m.tag}</span>
+      <div class="msg-bubble">
+        <span class="who">${m.who}</span>
+        <span class="text">${m.setup}</span>
+      </div>
+      <p class="q-prompt">${m.q}</p>
+      ${answered ? "" : `<p class="mini" style="margin:6px 0 0">Your first click is your answer.</p>`}
+      <div class="options">${optionsHTML}</div>
+      ${reactionHTML}
+    </div>
+  </div>`;
+}
+function answer(id){
+  const i = state.checkStep;
+  if(state.answers[i]) return;          // already locked
+  state.answers[i] = id;
+  render();
+}
+function nextCheck(){ if(state.checkStep<TOTAL_CHECK-1){state.checkStep++; render();} }
+
+async function finish(){
+  state.screen = "result";
+  state.submitError = null;
+  render();
+  await submitFinal();
+}
+async function submitFinal(){
+  if(state.submitted && state.submitted.ok) { render(); return; }
+  const p = basePayload();
+  p.action = "submit";
+  p.startedAt = state.startedAt;
+  p.score = score();
+  p.maxScore = MAX_SCORE;
+  p.practicePicks = state.picks;
+  p.practiceExplored = state.explored.map(x => x.length);
+  p.checkAnswers = state.answers;
+  p.checkStatuses = checkStatuses();
+  const r = await post(p, 30000);
+  if(r && r.ok){ state.submitted = r; state.recordId = r.recordId || state.recordId; state.submitError = null; }
+  else { state.submitError = (r && r.error) || "network"; }
+  render();
+}
+
+function renderResult(){
+  const sc = score();
+  const statuses = checkStatuses();
+  let rows = "";
+  CHECK.forEach((m, i) => {
+    const id = state.answers[i];
+    const o = id ? m.options.find(x => x.id === id) : null;
+    const label = o ? o.label : "No answer";
+    const s = statuses[i];
+    const tag = s ? `<span class="ind-status ${s}" style="margin-left:8px">${s==="strong"?"Strong":s==="partial"?"Partial":"Poor"} · ${CONFIG.POINTS[s]}</span>` : "";
+    rows += `
+      <div class="choice-row">
+        <span class="num clay">${i+1}</span>
+        <div>
+          <div class="sit">${m.tag}</div>
+          <div class="pick">${label} ${tag}</div>
+        </div>
+      </div>`;
+  });
+
+  let statusHTML = "";
+  if(state.submitted && state.submitted.ok){
+    const when = state.submitted.submittedAt ? new Date(state.submitted.submittedAt) : new Date();
+    const t = when.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+    const again = state.submitted.already ? ` A result for this NetID was already on file, so the first one stands (${state.submitted.score} of ${state.submitted.maxScore}).` : "";
+    statusHTML = `<div class="status-line ok">✅ <span><b>Recorded</b> at ${t} for ${CONFIG.SECTIONS[state.section]?CONFIG.SECTIONS[state.section].label:state.section}.${again}</span></div>`;
+  } else if(state.submitError){
+    const msgs = {
+      window_closed: "The class window for this activity is closed, so this result was not recorded.",
+      no_endpoint: "Recording is switched off on this copy of the page.",
+      timeout: "The connection timed out.",
+      network: "The connection failed.",
+      bad_response: "The collector answered in an unexpected way.",
+      bad_id: "The scrambled ID was rejected.",
+      bad_section: "The section was rejected."
+    };
+    const m = msgs[state.submitError] || ("Error: " + state.submitError);
+    const retry = (state.submitError === "window_closed" || state.submitError === "no_endpoint") ? "" : `<button class="btn" onclick="submitFinal()">Try to record again</button>`;
+    statusHTML = `<div class="status-line bad">⚠️ <span><b>Not recorded yet.</b> ${m}</span></div>
+      <div class="btn-row">${retry}</div>
+      <p class="mini"><b>If it will not record:</b> take a screenshot of this whole screen and show it to Professor Calafiore before you leave. The record ID below is your proof.</p>`;
+  } else {
+    statusHTML = `<div class="status-line wait">⏳ <span>Recording your result…</span></div>`;
+  }
+
+  app.innerHTML = `
+  <div class="screen">
+    ${whoStrip()}
+    <div class="progress"><span class="phase check">Result</span><span class="step-label">Your week is done</span></div>
+    <div class="card stagger">
+      <span class="kicker">The Check</span>
+      <h2>Your score.</h2>
+      <div class="score-hero"><span class="score-num">${sc}</span><span class="score-of">out of ${MAX_SCORE}</span></div>
+      ${statusHTML}
+      <div class="profile" style="margin-top:20px">
+        <h3>Your record ID</h3>
+        <div class="record-id">${state.recordId ? shortId(state.recordId) : ("B-" + shortId(state.h1))}</div>
+        <p class="mini" style="margin-bottom:0">Screenshot this screen for your own records. 📸</p>
+      </div>
+      <h3 style="margin-top:24px">The five moments of The Check</h3>
+      ${rows}
+      <div class="block b-concept" style="margin-top:20px">
+        <h3>The one thing to remember</h3>
+        <p>The richest channel is not the best channel. The <b>right</b> channel is the one that fits the message. Match it to the weight, the risk of being misread, and whether it needs to be remembered.</p>
+      </div>
+      <p class="mini center" style="margin-top:18px">You have reached the end of the Unit 1 simulation. Nicely done.</p>
+    </div>
+  </div>`;
+}
+
+/* boot */
+(function(){
+  const restored = restore();
+  if(!restored){ state.version = CONFIG.VERSION; }
+  if(restored && state.screen === "result" && !(state.submitted && state.submitted.ok)){
+    render(); submitFinal(); return;
+  }
+  render();
+})();
+</script>
+</body>
+</html>
