@@ -241,7 +241,8 @@ async function connect(){
   try {
     const r = await post({ action:"status" });
     if(!r.ok){ pill("connState", "not connected", "bad"); show("connMsg", r.error === "unauthorized" ? "That key was not accepted." : ("Could not connect: " + r.error), true); return; }
-    pill("connState", "connected · " + r.rows + " records total", "ok");
+    hide("connMsg");
+    pill("connState", "connected · " + (r.rows === undefined ? "" : r.rows + " records total"), "ok");
     windows = r.windows || {};
     codes = r.codes || {};
     if(r.sheetUrl) $("sheetLink").href = r.sheetUrl;
@@ -340,7 +341,7 @@ async function loadRosterText(text){
   const list = [];
   for(let r=1;r<table.length;r++){
     const u = String(table[r][iUser] || "").trim();
-    if(!u) continue;
+    if(!u || /previewuser/i.test(u)) continue;
     list.push({ last: iLast>=0 ? table[r][iLast] : "", first: iFirst>=0 ? table[r][iFirst] : "", username: u });
   }
   // remember any gradable column headers (they carry the column ID Blackboard needs)
@@ -371,7 +372,7 @@ async function loadRosterFromStorage(){
   colFromFile = cols.find(h => /in class|activity|northline|sim/i.test(h)) || "";
   if(colFromFile && !$("colHeader").value) $("colHeader").value = colFromFile;
   if(saved && saved.length){ await installRoster(saved, "storage"); }
-  else { roster = []; pill("rosterState", "no roster loaded for " + $("section").value, "warn"); paintResults(); paintPicture(); }
+  else { roster = []; pill("rosterState", "no roster on this computer for " + $("section").value + " (only needed for the Blackboard file)", "warn"); paintResults(); paintPicture(); }
 }
 function clearRoster(){ localStorage.removeItem(sectionKey()); roster = []; pill("rosterState", "no roster loaded", "gray"); paintResults(); paintPicture(); }
 
@@ -494,6 +495,15 @@ function downloadBlackboard(){
 
 /* ---------- boot ---------- */
 (function(){
+  // a setup link can carry the key and section after a # so a classroom computer needs no typing:
+  // teacher.html#key=...&s=13046   (the part after # never leaves the browser; it is removed right away)
+  try {
+    const h = new URLSearchParams(location.hash.replace(/^#/, ""));
+    if(h.get("key")) lsSet("nl_key", h.get("key").trim());
+    if(h.get("s")) lsSet("nl_section", h.get("s").trim());
+    if(h.get("a")) lsSet("nl_activity", h.get("a").trim());
+    if(location.hash) history.replaceState(null, "", location.pathname + location.search);
+  } catch(e){}
   $("endpoint").value = endpoint();
   $("key").value = lsGet("nl_key", "");
   $("activity").value = lsGet("nl_activity", "NL1");
