@@ -188,7 +188,7 @@ const CONFIG = {
   ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
   SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
   ACTIVITY: "NL1",                   // which activity this page records
-  VERSION: "nl1-2026-09-02b",
+  VERSION: "nl1-2026-09-02c",
   SECTIONS: {
     "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
     "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
@@ -883,7 +883,8 @@ async function submitSignin(){
   state.code = code;
   // the collector checks the class code before anyone starts
   const p = basePayload(); p.action = "start";
-  const r = await post(p, 30000);
+  let r = await post(p, 45000);
+  if(r && (r.error === "timeout" || r.error === "network")) r = await post(p, 45000);   // one quiet retry
   if(!r || !r.ok){
     const why = {
       bad_code: "That class code is not right. Check the board and type it again.",
@@ -1175,7 +1176,8 @@ async function submitFinal(){
   p.practiceExplored = state.explored.map(x => x.length);
   p.checkAnswers = state.answers;
   p.checkStatuses = checkStatuses();
-  const r = await post(p, 30000);
+  let r = await post(p, 60000);
+  if(r && (r.error === "timeout" || r.error === "network")) r = await post(p, 60000);   // one quiet retry
   if(r && r.ok){ state.submitted = r; state.recordId = r.recordId || state.recordId; state.submitError = null; }
   else { state.submitError = (r && r.error) || "network"; }
   render();
