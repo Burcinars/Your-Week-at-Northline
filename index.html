@@ -188,7 +188,7 @@ const CONFIG = {
   ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
   SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
   ACTIVITY: "NL1",                   // which activity this page records
-  VERSION: "nl1-2026-09-02d",
+  VERSION: "nl1-2026-09-02e",
   SECTIONS: {
     "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
     "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
@@ -894,7 +894,11 @@ async function submitSignin(){
   // the collector checks the class code before anyone starts
   const p = basePayload(); p.action = "start";
   const r = await post(p, 25000);
-  if(!r || !r.ok){
+  const unreachable = !r || r.error === "timeout" || r.error === "network" || r.error === "bad_response";
+  if(unreachable){
+    // the collector is not answering right now: let the student work, verify the code when they finish
+    state.unverified = true;
+  } else if(!r.ok){
     const why = {
       bad_code: "That class code is not right. Check the board and type it again.",
       window_closed: "Class is not open right now, so the activity cannot be recorded. Ask Professor Calafiore.",
@@ -907,7 +911,7 @@ async function submitSignin(){
     state.h1 = null; state.code = null;
     return;
   }
-  state.recordId = r.recordId || null;
+  state.recordId = (r && r.recordId) || null;
   state.netidTail = id.slice(-2);
   state.typedId = ""; state.typedCode = ""; state.confirmId = null;
   state.startedAt = new Date().toISOString();
@@ -924,6 +928,7 @@ function renderLearn(){
   <div class="screen">
     ${whoStrip()}
     ${progressBar("learn","Learn",TOTAL_LEARN,state.learnStep)}
+    ${state.unverified && state.learnStep === 0 ? `<div class="block b-clay" style="margin-bottom:16px"><p><b>Heads up:</b> the collector did not answer just now, so your class code could not be checked yet. You can keep going. It will be checked again when you finish, so make sure the code you typed is today's.</p></div>` : ""}
     <div class="card stagger">
       <span class="situation-tag">${item.tag}</span>
       <h2>${item.h}</h2>
