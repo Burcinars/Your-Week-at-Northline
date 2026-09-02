@@ -111,18 +111,13 @@ details{margin-top:10px} summary{cursor:pointer; font-weight:700; color:var(--ac
     </div>
 
     <div class="card clay">
-      <h2>3 · Class window</h2>
-      <p class="note">When a window is <b>closed</b>, the simulation still runs but nothing new is recorded for that section. Close it when class ends.</p>
+      <h2>3 · Class code</h2>
+      <p class="note"><b>Start class</b> makes a fresh code for the section chosen above and opens it. Say the code out loud; students need it to begin. <b>End class</b> closes the section: nothing new is recorded after that.</p>
       <div class="row">
-        <span>13046:</span><span id="win13046" class="pill gray">?</span>
-        <button class="btn small ghost" onclick="setWindow('13046','open')">Open</button>
-        <button class="btn small ghost" onclick="setWindow('13046','closed')">Close</button>
+        <button class="btn" onclick="startClass()">Start class · new code</button>
+        <button class="btn ghost" onclick="endClass()">End class</button>
       </div>
-      <div class="row">
-        <span>13901:</span><span id="win13901" class="pill gray">?</span>
-        <button class="btn small ghost" onclick="setWindow('13901','open')">Open</button>
-        <button class="btn small ghost" onclick="setWindow('13901','closed')">Close</button>
-      </div>
+      <div id="codeBox" style="margin-top:14px"></div>
       <div class="msg" id="winMsg"></div>
     </div>
 
@@ -185,6 +180,7 @@ const $ = id => document.getElementById(id);
 let rows = [];           // results from the collector
 let roster = [];         // [{last, first, username, h1, h2}]
 let windows = {};
+let codes = {};
 let colFromFile = "";
 
 /* ---------- storage ---------- */
@@ -231,6 +227,7 @@ async function connect(){
     if(!r.ok){ pill("connState", "not connected", "bad"); show("connMsg", r.error === "unauthorized" ? "That key was not accepted." : ("Could not connect: " + r.error), true); return; }
     pill("connState", "connected · " + r.rows + " records total", "ok");
     windows = r.windows || {};
+    codes = r.codes || {};
     if(r.sheetUrl) $("sheetLink").href = r.sheetUrl;
     paintWindows();
     await loadRosterFromStorage();
@@ -246,25 +243,42 @@ async function refresh(){
   if(!r.ok){ show("connMsg", "Refresh failed: " + r.error, true); return; }
   rows = r.rows || [];
   windows = r.windows || windows;
+  codes = r.codes || codes;
   paintWindows();
   $("lastRefresh").textContent = "Refreshed " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + " · " + rows.length + " record" + (rows.length===1?"":"s");
   paintResults();
   paintPicture();
 }
 
-/* ---------- windows ---------- */
+/* ---------- class code and window ---------- */
 function paintWindows(){
-  ["13046","13901"].forEach(s => {
-    const st = windows[s] || "open";
-    pill("win" + s, st, st === "open" ? "ok" : "bad");
-  });
+  const sec = $("section").value;
+  const other = sec === "13046" ? "13901" : "13046";
+  const st = windows[sec] || (codes[sec] ? "open" : "closed");
+  const code = codes[sec] || "";
+  const big = (st === "open" && code)
+    ? `<div class="big" style="font-size:44px; letter-spacing:3px">${esc(code)}</div><div class="note">Section ${esc(sec)} is <b>open</b>. Students type this code to begin.</div>`
+    : `<div class="big" style="font-size:26px; color:var(--ink-soft)">closed</div><div class="note">Section ${esc(sec)} is closed. Press <b>Start class</b> when the room is ready.</div>`;
+  const otherSt = windows[other] || (codes[other] ? "open" : "closed");
+  $("codeBox").innerHTML = big + `<div class="note" style="margin-top:8px">Other section ${esc(other)}: ${otherSt === "open" ? "<b>open</b> with code " + esc(codes[other] || "?") : "closed"}.</div>`;
 }
-async function setWindow(section, state){
-  const r = await post({ action:"window", section, state });
-  if(!r.ok){ show("winMsg", "Could not change the window: " + r.error, true); return; }
-  windows = r.windows || {};
+async function startClass(){
+  hide("winMsg");
+  const section = $("section").value;
+  const r = await post({ action:"open", section });
+  if(!r.ok){ show("winMsg", "Could not start the class: " + r.error, true); return; }
+  windows = r.windows || {}; codes = r.codes || {};
   paintWindows();
-  show("winMsg", "Section " + section + " is now " + state + ".");
+  show("winMsg", "Section " + section + " is open. The code is " + r.code + ". Say it, write it on the board, then let them go.");
+}
+async function endClass(){
+  hide("winMsg");
+  const section = $("section").value;
+  const r = await post({ action:"close", section });
+  if(!r.ok){ show("winMsg", "Could not end the class: " + r.error, true); return; }
+  windows = r.windows || {}; codes = r.codes || {};
+  paintWindows();
+  show("winMsg", "Section " + section + " is closed. Nothing new will be recorded. Now click Refresh and download the Blackboard file.");
 }
 
 /* ---------- roster ---------- */
@@ -468,7 +482,7 @@ function downloadBlackboard(){
   $("key").value = lsGet("nl_key", "");
   $("activity").value = lsGet("nl_activity", "NL1");
   $("section").value = lsGet("nl_section", "13046");
-  $("section").addEventListener("change", async () => { lsSet("nl_section", $("section").value); $("colHeader").value = ""; await loadRosterFromStorage(); if($("key").value.trim()) refresh(); });
+  $("section").addEventListener("change", async () => { lsSet("nl_section", $("section").value); $("colHeader").value = ""; paintWindows(); await loadRosterFromStorage(); if($("key").value.trim()) refresh(); });
   $("activity").addEventListener("change", () => { lsSet("nl_activity", $("activity").value); if($("key").value.trim()) refresh(); });
   if($("key").value.trim()) connect();
 })();

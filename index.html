@@ -188,7 +188,7 @@ const CONFIG = {
   ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
   SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
   ACTIVITY: "NL1",                   // which activity this page records
-  VERSION: "nl1-2026-09-02",
+  VERSION: "nl1-2026-09-02b",
   SECTIONS: {
     "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
     "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
@@ -712,7 +712,7 @@ async function post(payload, timeoutMs){
   } finally { clearTimeout(t); }
 }
 function basePayload(){
-  return { h1: state.h1, section: state.section, activity: CONFIG.ACTIVITY, clientVersion: CONFIG.VERSION };
+  return { h1: state.h1, section: state.section, activity: CONFIG.ACTIVITY, code: state.code || "", clientVersion: CONFIG.VERSION };
 }
 function pingStart(){
   const p = basePayload(); p.action = "start";
@@ -796,7 +796,7 @@ function renderIntro(){
         <h3>How this works</h3>
         <p><b>Learn</b> first. Four short ideas, one screen at a time, starting from zero.<br><br><b>Practice</b> next. Five workplace moments. Pick an option, see how the other person actually reacts, and find out why. Try every option you are curious about. Practice is not scored.<br><br><b>The Check</b> last. Five new moments from your second week. One answer each, no retries. This is the part that is scored, out of <b>${MAX_SCORE} points</b>.</p>
       </div>
-      <p class="mini">About <b>20 to 25 minutes</b>. Your result is recorded for Professor Calafiore at the end. Do it in one sitting, in this same tab.</p>
+      <p class="mini">About <b>20 to 25 minutes</b>. You need the <b>class code</b> Professor Calafiore gives at the start of class. Your result is recorded at the end. Do it in one sitting, in this same tab.</p>
       <div class="btn-row">
         <button class="btn" onclick="goSignin()">Start →</button>
       </div>
@@ -825,6 +825,11 @@ function renderSignin(){
         <div class="seg">${secButtons}</div>
       </div>
       <div class="field">
+        <label for="code">Class code (Professor Calafiore says it in class)</label>
+        <input id="code" autocomplete="off" autocapitalize="characters" placeholder="RIVER-73" maxlength="20" value="${state.typedCode ? state.typedCode : ""}">
+        <div class="hint">Two parts: a word and a number. Capital letters do not matter.</div>
+      </div>
+      <div class="field">
         <label for="netid">Your NetID</label>
         <input id="netid" inputmode="numeric" autocomplete="off" placeholder="12345678" maxlength="40" value="${state.typedId ? state.typedId : ""}">
         <div class="hint">Eight digits. Type it carefully: this is how your result reaches the grade book.</div>
@@ -834,13 +839,17 @@ function renderSignin(){
       <div class="btn-row">
         <button class="btn" id="signinBtn" onclick="submitSignin()">Continue →</button>
       </div>
-      <div class="privacy"><b>What is recorded:</b> a scrambled version of your NetID, your section, your choices, your score, and the time. <b>What is never sent or stored:</b> your name, your email, or your NetID itself. The scrambling happens in this browser before anything leaves your device, and only Professor Calafiore can match the result back to the class roster.</div>
+      <div class="privacy"><b>What is recorded:</b> a scrambled version of your NetID, your section, the class code, your choices, your score, and the time. <b>What is never sent or stored:</b> your name, your email, or your NetID itself. The scrambling happens in this browser before anything leaves your device, and only Professor Calafiore can match the result back to the class roster.</div>
     </div>
   </div>`;
   const inp = document.getElementById("netid");
-  inp.addEventListener("input", () => { state.typedId = inp.value; state.confirmId = null; document.getElementById("confirmBox").innerHTML = ""; document.getElementById("signinBtn").style.display = ""; });
+  const codeInp = document.getElementById("code");
+  const resetConfirm = () => { state.confirmId = null; document.getElementById("confirmBox").innerHTML = ""; document.getElementById("signinBtn").style.display = ""; };
+  inp.addEventListener("input", () => { state.typedId = inp.value; resetConfirm(); });
+  codeInp.addEventListener("input", () => { state.typedCode = codeInp.value; resetConfirm(); });
   inp.addEventListener("keydown", e => { if(e.key === "Enter") submitSignin(); });
-  setTimeout(() => inp.focus(), 50);
+  codeInp.addEventListener("keydown", e => { if(e.key === "Enter") inp.focus(); });
+  setTimeout(() => (codeInp.value ? inp : codeInp).focus(), 50);
 }
 function pickSection(k){ state.section = k; state.confirmId = null; renderSignin(); }
 function editId(){ state.confirmId = null; document.getElementById("confirmBox").innerHTML = ""; document.getElementById("signinBtn").style.display = ""; document.getElementById("netid").focus(); }
@@ -849,7 +858,9 @@ async function submitSignin(){
   const err = document.getElementById("err");
   const raw = document.getElementById("netid").value;
   const id = normalizeId(raw);
+  const code = normalizeCode(document.getElementById("code").value);
   if(!state.section){ err.textContent = "Pick your section first."; return; }
+  if(code.length < 4){ err.textContent = "Type the class code first. Professor Calafiore says it at the start of class."; return; }
   if(!/^\d{8}$/.test(id)){ err.textContent = "That does not look like an 8 digit NetID. Check it and try again."; return; }
   if(!state.confirmId || state.confirmId !== id){
     state.confirmId = id;
@@ -859,23 +870,42 @@ async function submitSignin(){
     document.getElementById("signinBtn").style.display = "none";
     return;
   }
-  const btn = document.getElementById("signinBtn");
-  btn.disabled = true; btn.textContent = "One moment…";
+  const btn = document.querySelector("#confirmBox .btn") || document.getElementById("signinBtn");
+  btn.disabled = true; btn.textContent = "Checking the class code…";
+  err.textContent = "";
   try {
     state.h1 = await scramble(id);
   } catch(e) {
     err.textContent = "Your browser could not scramble the ID. Open this page in Chrome, Safari, or Edge and try again.";
-    btn.disabled = false; btn.textContent = "Continue →";
+    btn.disabled = false; btn.textContent = "Yes, that is me →";
     return;
   }
+  state.code = code;
+  // the collector checks the class code before anyone starts
+  const p = basePayload(); p.action = "start";
+  const r = await post(p, 30000);
+  if(!r || !r.ok){
+    const why = {
+      bad_code: "That class code is not right. Check the board and type it again.",
+      window_closed: "Class is not open right now, so the activity cannot be recorded. Ask Professor Calafiore.",
+      no_endpoint: "Recording is switched off on this copy of the page.",
+      timeout: "The collector did not answer. Check the Wi-Fi and press the button again.",
+      network: "Could not reach the collector. Check the Wi-Fi and press the button again."
+    };
+    err.textContent = why[(r && r.error) || "network"] || ("Something went wrong: " + ((r && r.error) || "unknown") + ". Try again.");
+    btn.disabled = false; btn.textContent = "Yes, that is me →";
+    state.h1 = null; state.code = null;
+    return;
+  }
+  state.recordId = r.recordId || null;
   state.netidTail = id.slice(-2);
-  state.typedId = ""; state.confirmId = null;
+  state.typedId = ""; state.typedCode = ""; state.confirmId = null;
   state.startedAt = new Date().toISOString();
   state.checkOrder = seededOrder(state.h1);
-  pingStart();
   state.screen = "learn"; state.learnStep = 0;
   render();
 }
+function normalizeCode(c){ return String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
 
 function renderLearn(){
   const item = LEARN[state.learnStep];
@@ -1179,7 +1209,8 @@ function renderResult(){
     statusHTML = `<div class="status-line ok">✅ <span><b>Recorded</b> at ${t} for ${CONFIG.SECTIONS[state.section]?CONFIG.SECTIONS[state.section].label:state.section}.${again}</span></div>`;
   } else if(state.submitError){
     const msgs = {
-      window_closed: "The class window for this activity is closed, so this result was not recorded.",
+      window_closed: "Class has ended for this activity, so this result was not recorded.",
+      bad_code: "The class code no longer matches, so this result was not recorded.",
       no_endpoint: "Recording is switched off on this copy of the page.",
       timeout: "The connection timed out.",
       network: "The connection failed.",
