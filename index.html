@@ -188,7 +188,7 @@ const CONFIG = {
   ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
   SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
   ACTIVITY: "NL1",                   // which activity this page records
-  VERSION: "nl1-2026-09-02c",
+  VERSION: "nl1-2026-09-02d",
   SECTIONS: {
     "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
     "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
@@ -699,17 +699,27 @@ async function sha256Hex(text){
 async function scramble(netid){
   return sha256Hex(CONFIG.SALT1 + "|" + netid);
 }
-async function post(payload, timeoutMs){
+async function postOnce(payload, timeoutMs){
   if(!CONFIG.ENDPOINT || CONFIG.ENDPOINT.indexOf("http") !== 0) return { ok:false, error:"no_endpoint" };
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs || 25000);
   try {
-    const res = await fetch(CONFIG.ENDPOINT, { method:"POST", body: JSON.stringify(payload), signal: ctrl.signal });
+    const res = await fetch(CONFIG.ENDPOINT, { method:"POST", body: JSON.stringify(payload), signal: ctrl.signal, credentials:"omit", cache:"no-store" });
     const text = await res.text();
     try { return JSON.parse(text); } catch(e){ return { ok:false, error:"bad_response" }; }
   } catch(e) {
     return { ok:false, error: (e && e.name === "AbortError") ? "timeout" : "network" };
   } finally { clearTimeout(t); }
+}
+/* Google occasionally answers slowly or with an error page instead of JSON; try up to three times */
+async function post(payload, timeoutMs){
+  let r = null;
+  for(let attempt = 0; attempt < 3; attempt++){
+    r = await postOnce(payload, timeoutMs || 25000);
+    if(r && (r.ok || (r.error !== "timeout" && r.error !== "network" && r.error !== "bad_response"))) return r;
+    await new Promise(res => setTimeout(res, 1200 + attempt * 800));
+  }
+  return r;
 }
 function basePayload(){
   return { h1: state.h1, section: state.section, activity: CONFIG.ACTIVITY, code: state.code || "", clientVersion: CONFIG.VERSION };
@@ -883,8 +893,7 @@ async function submitSignin(){
   state.code = code;
   // the collector checks the class code before anyone starts
   const p = basePayload(); p.action = "start";
-  let r = await post(p, 45000);
-  if(r && (r.error === "timeout" || r.error === "network")) r = await post(p, 45000);   // one quiet retry
+  const r = await post(p, 25000);
   if(!r || !r.ok){
     const why = {
       bad_code: "That class code is not right. Check the board and type it again.",
@@ -1176,8 +1185,7 @@ async function submitFinal(){
   p.practiceExplored = state.explored.map(x => x.length);
   p.checkAnswers = state.answers;
   p.checkStatuses = checkStatuses();
-  let r = await post(p, 60000);
-  if(r && (r.error === "timeout" || r.error === "network")) r = await post(p, 60000);   // one quiet retry
+  const r = await post(p, 25000);
   if(r && r.ok){ state.submitted = r; state.recordId = r.recordId || state.recordId; state.submitError = null; }
   else { state.submitError = (r && r.error) || "network"; }
   render();
