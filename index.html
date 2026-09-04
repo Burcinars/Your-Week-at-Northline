@@ -188,7 +188,7 @@ const CONFIG = {
   ENDPOINT: "https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec",          // Google Apps Script web app URL (set at deploy time)
   SALT1: "northline-ctstate-2026",   // public salt, must match the instructor dashboard
   ACTIVITY: "NL1",                   // which activity this page records
-  VERSION: "nl1-2026-09-02f",
+  VERSION: "nl1-2026-09-04g",
   SECTIONS: {
     "13046": { label: "CRN 13046", sub: "In person · Mon/Wed 12:30" },
     "13901": { label: "CRN 13901", sub: "Live online · Mon/Wed 5:30" }
@@ -792,6 +792,7 @@ function render(){
   if(state.screen === "checkintro") return renderCheckIntro();
   if(state.screen === "check") return renderCheck();
   if(state.screen === "result") return renderResult();
+  if(state.screen === "lookup") return renderLookup();
 }
 
 function renderIntro(){
@@ -810,11 +811,82 @@ function renderIntro(){
       <div class="btn-row">
         <button class="btn" onclick="goSignin()">Start →</button>
       </div>
+      <p class="mini" style="margin-top:18px">Already finished this activity? <a href="#" onclick="goLookup(); return false;"><b>Check that your result was recorded →</b></a></p>
     </div>
   </div>`;
 }
 
 function goSignin(){ state.screen = "signin"; render(); }
+function goLookup(){ state.screen = "lookup"; render(); }
+function backToIntro(){ state.screen = "intro"; render(); }
+
+/* =========================================================================
+   CHECK MY RESULT: a student confirms a record exists (record id and times, no score)
+   ========================================================================= */
+function renderLookup(){
+  const params = new URLSearchParams(location.search);
+  const preset = params.get("s");
+  if(!state.section && preset && CONFIG.SECTIONS[preset]) state.section = preset;
+  const secButtons = Object.keys(CONFIG.SECTIONS).map(k => {
+    const s = CONFIG.SECTIONS[k];
+    return `<button type="button" class="${state.section===k?'on':''}" onclick="state.section='${k}'; renderLookup();">${s.label}<small>${s.sub}</small></button>`;
+  }).join("");
+  app.innerHTML = `
+  <div class="screen">
+    <div class="card stagger">
+      <span class="kicker">Check my result</span>
+      <h2>Was my result recorded?</h2>
+      <p>Type the same NetID you used for the activity. This shows whether a record exists, when it was finished, and its <b>record ID</b>. Your score itself lives in Blackboard under <b>My Grades</b>.</p>
+      <div class="field">
+        <label>Your section</label>
+        <div class="seg">${secButtons}</div>
+      </div>
+      <div class="field">
+        <label for="lookupId">Your NetID</label>
+        <input id="lookupId" inputmode="numeric" autocomplete="off" placeholder="12345678" maxlength="40" value="${state.typedId ? state.typedId : ""}">
+        <div class="hint">Eight digits, the number you use to log in to Blackboard.</div>
+      </div>
+      <div class="err" id="lookupErr"></div>
+      <div id="lookupOut"></div>
+      <div class="btn-row">
+        <button class="btn" id="lookupBtn" onclick="runLookup()">Check →</button>
+        <button class="btn ghost" onclick="backToIntro()">Back</button>
+      </div>
+      <div class="privacy">Nothing is stored when you check. Your NetID is scrambled in this browser exactly as it was during the activity, and only the scrambled version is sent.</div>
+    </div>
+  </div>`;
+  const inp = document.getElementById("lookupId");
+  inp.addEventListener("keydown", e => { if(e.key === "Enter") runLookup(); });
+  setTimeout(() => inp.focus(), 50);
+}
+async function runLookup(){
+  const err = document.getElementById("lookupErr");
+  const out = document.getElementById("lookupOut");
+  const btn = document.getElementById("lookupBtn");
+  const id = normalizeId(document.getElementById("lookupId").value);
+  err.textContent = ""; out.innerHTML = "";
+  if(!state.section){ err.textContent = "Pick your section first."; return; }
+  if(!/^\d{8}$/.test(id)){ err.textContent = "That does not look like an 8 digit NetID. Check it and try again."; return; }
+  btn.disabled = true; btn.textContent = "Checking…";
+  let h1 = "";
+  try { h1 = await scramble(id); } catch(e){ err.textContent = "Your browser could not scramble the ID. Try Chrome, Safari, or Edge."; btn.disabled = false; btn.textContent = "Check →"; return; }
+  const r = await post({ action:"lookup", h1: h1, section: state.section, clientVersion: CONFIG.VERSION }, 25000);
+  btn.disabled = false; btn.textContent = "Check →";
+  if(!r || !r.ok){ err.textContent = "Could not reach the collector. Check the Wi-Fi and try again."; return; }
+  const fmt = iso => { const d = new Date(iso); return isNaN(d) ? String(iso) : d.toLocaleString([], {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}); };
+  const label = CONFIG.SECTIONS[state.section] ? CONFIG.SECTIONS[state.section].label : state.section;
+  if(!r.found || !r.found.length){
+    out.innerHTML = `<div class="block b-why" style="margin-top:14px"><h3>No record for this NetID in ${label}</h3><p>If you did the activity, you may have typed a different NetID that day. Email Professor Calafiore with the date and the time you finished, and she will match it by hand. If you meant another section, pick it above and check again.</p></div>`;
+    return;
+  }
+  const items = r.found.map(f => {
+    const name = f.activity === "NL1" ? "Your Week at Northline (In Class Activity 1)" : f.activity;
+    return f.status === "submitted"
+      ? `<p>✅ <b>${name}</b><br>Recorded on <b>${fmt(f.submittedAt)}</b>. Record ID <b style="letter-spacing:2px">${r.recordId}</b>.</p>`
+      : `<p>⏳ <b>${name}</b><br>Started ${fmt(f.startedAt)} but <b>not finished</b>, so nothing was recorded.</p>`;
+  }).join("");
+  out.innerHTML = `<div class="block b-clay" style="margin-top:14px"><h3>${label}</h3>${items}<p class="mini">Your score is in Blackboard under <b>My Grades</b>. If a recorded activity shows no grade there, email Professor Calafiore and include the record ID above.</p></div>`;
+}
 
 function renderSignin(){
   const params = new URLSearchParams(location.search);
@@ -850,6 +922,7 @@ function renderSignin(){
         <button class="btn" id="signinBtn" onclick="submitSignin()">Continue →</button>
       </div>
       <div class="privacy"><b>What is recorded:</b> a scrambled version of your NetID, your section, the class code, your choices, your score, and the time. <b>What is never sent or stored:</b> your name, your email, or your NetID itself. The scrambling happens in this browser before anything leaves your device, and only Professor Calafiore can match the result back to the class roster.</div>
+      <p class="mini" style="margin-top:14px">Already finished? <a href="#" onclick="goLookup(); return false;"><b>Check that your result was recorded →</b></a></p>
     </div>
   </div>`;
   const inp = document.getElementById("netid");
